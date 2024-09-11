@@ -6,14 +6,15 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:47:33 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/09 15:47:39 by monachit         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:37:37 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int main(void)
+int main(int ac, char **av)
 {
-    printf("Hello, World!\n");
+    if (parse(ac, av))
+        return (printf("Error\n"), 1);
     return (0);
 }
