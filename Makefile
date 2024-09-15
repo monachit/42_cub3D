@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Wall
 
-SRCS = main.c parsing.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c 
+SRCS = main.c parsing.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c game.c exit.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -13,7 +13,7 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lmlx -lX11 -lXext 
 
 $(LIBFT):
 	make -C libft

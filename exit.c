@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 15:47:33 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/15 15:04:59 by monachit         ###   ########.fr       */
+/*   Created: 2024/09/14 17:49:42 by monachit          #+#    #+#             */
+/*   Updated: 2024/09/14 17:51:07 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int main(int ac, char **av)
+void    ft_show_error(char *str)
 {
-    char **map;
-
-    map = parse(ac, av);
-    game_plan(map);
-    return (0);
+    printf("%s\n", str);
+    exit (11);
 }

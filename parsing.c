@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/11 16:36:40 by monachit         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:03:10 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,18 @@ void    check_error(char **map)
     return ;
 }
 
-int parse(int ac, char **av)
+char **parse(int ac, char **av)
 {
     char **map;
     
     if (ac != 2)
-        return (1);
+        ft_show_error("error\n");
     if (check_name(av[1]))
-        return (1);
+        ft_show_error("error\n");
     if (open(av[1], O_RDONLY) == -1)
-        return (1);
+        ft_show_error("error\n");
     map = check_map(av[1]);
     check_error(map);
-    return (0);
+    return (map);
 
 }
