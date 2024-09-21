@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/15 17:04:21 by monachit         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:32:57 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,31 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 		}
 	}
 }
-static int i2 = 113;
-static int i = 113;
+static int i2 = 100;
+static int i = 100;
 int key_hook(int keycode, t_vars *vars)
 {
-    draw_square(vars, vars->p_x * i, vars->p_y * i2, 20, 0xFFFFFF); // Clear the previous point
-    if (keycode == 119)  // Up arrow
-        i2 -=5;
-    else if (keycode == 115)  // Down arrow
-        i2 +=5;
-    else if (keycode == 97)  // Left arrow
-        i -= 5;
-    else if (keycode == 100)  // Right arrow
-        i += 5;
+    int next_x = i;
+    int next_y = i2;
+
+    draw_square(vars, vars->p_x * i, vars->p_y * i2, 20, 0xFFFFFF);
+    if (keycode == 119)  // Up (W key)
+        next_y -= 20;
+    else if (keycode == 115)  // Down (S key)
+        next_y += 20;
+    else if (keycode == 97)  // Left (A key)
+        next_x -= 20;
+    else if (keycode == 100)  // Right (D key)
+        next_x += 20;
+    printf("%d  %d\n", next_x * vars->p_x, next_y * vars->p_y);
+    if (vars->map1[vars->p_y * next_y/ 100][vars->p_x * next_x / 100] != '1')
+    {
+        i = next_x;
+        i2 = next_y;
+    }
     draw_square(vars, vars->p_x * i, vars->p_y * i2, 20, 0xFF6FFF);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+    
     return 0;
 }
 
@@ -86,13 +96,15 @@ void    game_plan(char **map1)
     t_vars vars;
 
     char *map[] = {
-        "1111111111",
-        "1000011111",
-        "1000011111",
-        "110N000011111",
-        "1111111111",
+        "1111",
+        "1N01",
+        "1001",
+        "1001",
+        "1111",
         NULL
     };
+
+    vars.map1 = map;
     vars.mlx = mlx_init();
     vars.win_width = ft_strlen(map[0]);
     vars.win_height = 0;
@@ -109,13 +121,13 @@ void    game_plan(char **map1)
         for (int j = 0; j < vars.win_width; j++)
         {
             if (map[i][j] == '1') 
-                draw_square(&vars, j * 100, i * 100, 97, 0x00FF0000); 
+                draw_square(&vars, j * 100, i * 100, 100, 0x00FF0000); 
             else if (map[i][j] == '0')
                 draw_square(&vars, j * 100, i * 100, 100, 0xFFFFFF);
             else if (map[i][j] == 'N')
             {
                 draw_square(&vars, j * 100, i * 100, 100, 0xFFFFFF);
-                draw_square(&vars, j * 113, i * 113, 20, 0xFF6FFF);
+                draw_square(&vars, j * 100, i * 100, 20, 0xFF6FFF);
             }
         }
     }
