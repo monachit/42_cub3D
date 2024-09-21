@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/19 16:32:57 by monachit         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:19:02 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 		}
 	}
 }
-static int i2 = 100;
-static int i = 100;
+
 int key_hook(int keycode, t_vars *vars)
 {
-    int next_x = i;
-    int next_y = i2;
+    int next_x = vars->p;
+    int next_y = vars->c;
 
-    draw_square(vars, vars->p_x * i, vars->p_y * i2, 20, 0xFFFFFF);
+    draw_square(vars, vars->p, vars->c, 20, 0xFFFFFF);
     if (keycode == 119)  // Up (W key)
         next_y -= 20;
     else if (keycode == 115)  // Down (S key)
@@ -56,13 +55,13 @@ int key_hook(int keycode, t_vars *vars)
         next_x -= 20;
     else if (keycode == 100)  // Right (D key)
         next_x += 20;
-    printf("%d  %d\n", next_x * vars->p_x, next_y * vars->p_y);
-    if (vars->map1[vars->p_y * next_y/ 100][vars->p_x * next_x / 100] != '1')
+    printf("%d  %d\n", next_x, next_y);
+    if (vars->map1[next_y / 100][next_x / 100] != '1')
     {
-        i = next_x;
-        i2 = next_y;
+        vars->c = next_y;
+        vars->p = next_x;
     }
-    draw_square(vars, vars->p_x * i, vars->p_y * i2, 20, 0xFF6FFF);
+    draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
     
     return 0;
@@ -97,9 +96,9 @@ void    game_plan(char **map1)
 
     char *map[] = {
         "1111",
-        "1N01",
         "1001",
         "1001",
+        "10N1",
         "1111",
         NULL
     };
@@ -128,6 +127,8 @@ void    game_plan(char **map1)
             {
                 draw_square(&vars, j * 100, i * 100, 100, 0xFFFFFF);
                 draw_square(&vars, j * 100, i * 100, 20, 0xFF6FFF);
+                vars.c = i * 100;
+                vars.p = j * 100;
             }
         }
     }
