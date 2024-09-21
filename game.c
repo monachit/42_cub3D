@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/15 17:04:21 by monachit         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:14:45 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void    game_plan(char **map1)
         for (int j = 0; j < vars.win_width; j++)
         {
             if (map[i][j] == '1') 
-                draw_square(&vars, j * 100, i * 100, 97, 0x00FF0000); 
+                draw_square(&vars, j * 100, i * 100, 100, 0x00FF0000); 
             else if (map[i][j] == '0')
                 draw_square(&vars, j * 100, i * 100, 100, 0xFFFFFF);
             else if (map[i][j] == 'N')
