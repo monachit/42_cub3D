@@ -233,7 +233,11 @@ void    collect_data(t_read **file, t_data *data)
             curr->type = MAP;
             // printf("%s", curr->line);
         }
-        // printf("calcul : %d; s = /%s/", curr->nb_words, curr->line);
+        else if (ft_strcmp(curr->line, "\n"))
+            ft_show_error("invalid line!\n");
+
+            // printf("type = %d, nb_words = %d / %s", curr->type, curr->nb_words, curr->line);
+        // printf("calcul : %d; s = /%s/", curr->nb_words, curr->line);m
         // printf("TYPE : %d/ NB_WORDS / %d/ LINE : %s\n", curr->type, curr->nb_words, curr->line);
         curr = curr->next;
     }
