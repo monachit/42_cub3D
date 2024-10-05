@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/09/21 15:01:35 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/10/04 16:06:57 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,55 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 	}
 }
 
+vector cast_ray(t_vars *vars, double angle)
+{
+    vector ray_end;
+    
+    double ray_Dirx = cos(angle);
+    double ray_Diry = sin(angle);
+    
+    ray_end.d_x = vars->p_x * 100 + ray_Dirx * length_ray;
+    ray_end.d_y = vars->p_y * 100 + ray_Diry * length_ray;
+    return ray_end;
+}
+
+void draw_line(t_vars *vars, int x0, int y0, int x1, int y1, int color) {
+    int dx = abs(x1 - x0);
+    int dy = abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx - dy;
+
+    while (1) {
+        my_mlx_pixel_put(vars, x0, y0, color);
+
+
+        int err2 = err * 2;
+        if (x0 == x1 && y0 == y1) break;
+        if (err2 > -dy) {
+            err -= dy;
+            x0 += sx;
+        }
+        if (err2 < dx) {
+            err += dx;
+            y0 += sy;
+        }
+        
+    }
+}
+static int i= 0;
+void draw_ray(t_vars *vars) {
+    vector ray_end = cast_ray(vars, vars->p_1);
+    int start_x = vars->p_x - i;
+    int start_y = vars->p_y - i;
+    int end_x = (int)ray_end.d_x;
+    int end_y = (int)ray_end.d_y;
+    draw_line(vars, start_x, start_y, end_x, end_y, 0x4575B4); // Draw the ray in blue
+    }
+
+
+
+
 int key_hook(int keycode, t_vars *vars)
 {
     int next_x = vars->p;
@@ -55,15 +104,18 @@ int key_hook(int keycode, t_vars *vars)
         next_x -= 20;
     else if (keycode == 100)  // Right (D key)
         next_x += 20;
-    printf("%d  %d\n", next_x, next_y);
+    else if (keycode == 65361)
+        i += 10;
+    else if (keycode == 65363)
+        i -= 10;
     if (vars->map1[next_y / 100][next_x / 100] != '1')
     {
         vars->c = next_y;
         vars->p = next_x;
     }
     draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
-    mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
-    
+    draw_ray(vars);
+     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
     return 0;
 }
 
@@ -107,6 +159,7 @@ void    game_plan(char **map1)
     vars.mlx = mlx_init();
     vars.win_width = ft_strlen(map[0]);
     vars.win_height = 0;
+    vars.p_1 = 0;
     while (map[vars.win_height])
         vars.win_height++;
     vars.win = mlx_new_window(vars.mlx, vars.win_width * 100, vars.win_height * 100, "YWAAA");
