@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/02 21:11:04 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/04 14:07:28 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ int map_token(char *s)
     
 }
 
+
 void    collect_data(t_read **file, t_data *data)
 {
 
@@ -198,14 +199,12 @@ void    collect_data(t_read **file, t_data *data)
         {
             i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
             data->west_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            // curr->line = NULL;
             curr->type = WE;
         }
         else if (!ft_strcmp("EA", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
         {
             i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
             data->east_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            // curr->line = NULL;
             curr->type = EA;
         }
         else if (!ft_strcmp("F", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
@@ -215,7 +214,6 @@ void    collect_data(t_read **file, t_data *data)
                 ft_show_error("Floor color input invalid!\n");
             ft_rgb_colors(ft_substr(curr->line, i, extract_len_first_word(curr->line, i)), &data->f1, 
                 &data->f2, &data->f3);
-            // curr->line = NULL;
             curr->type = F;
         }
         else if (!ft_strcmp("C", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
@@ -225,7 +223,6 @@ void    collect_data(t_read **file, t_data *data)
                 ft_show_error("Ceiling color input invalid!\n");
             ft_rgb_colors(ft_substr(curr->line, i, extract_len_first_word(curr->line, i)), &data->c1, 
                 &data->c2, &data->c3);
-            // curr->line = NULL;
             curr->type = C;
         }
         else if (curr->nb_words > 0 && map_token(curr->line))
@@ -354,10 +351,32 @@ void    check_len_spaces(t_map *map)
     }
 }
 
+int calcul_character(t_map *map, char c)
+{
+    map = map->next;
+    int count = 0;
+    while (map->next)
+    {
+        int i = 0;
+        while (map->line[i])
+        {
+            if (c == map->line[i])
+                count++;
+            i++;
+        }
+        map = map->next;
+    }
+    return (count);
+    
+}
+
 void    parse_map(t_map *map)
 {
     map_closed(map);
     check_len_spaces(map);
+    if (calcul_character(map, 'N') != 1 || calcul_character(map, 's') > 1
+        || calcul_character(map, 'E') > 1 || calcul_character(map, 'W') > 1)
+        ft_show_error("Characters of map invalid!\n");
 }
 
 void    check_map_last(t_read *file)
@@ -371,6 +390,33 @@ void    check_map_last(t_read *file)
         if (file->type != INIT)
             ft_show_error("Map syntax!");
         file = file->next;
+    }
+}
+
+void	free_list(t_read **list)
+{
+	t_read	*curr;
+	t_read	*aux;
+
+	if (!(*list))
+		return ;
+	curr = *list;
+	while (curr != NULL)
+	{
+		aux = curr->next;
+		free(curr);
+		curr = aux;
+	}
+	*list = NULL;
+}
+
+void    ft_free_line_read(t_read **file)
+{
+    t_read *curr = *file;
+    while (curr)
+    {
+        free(curr->line);
+        curr = curr->next;
     }
 }
 
@@ -390,30 +436,8 @@ t_data  parse(int ac, char **av)
         || check_dup(&file, EA) != 1 || check_dup(&file, F) != 1 || check_dup(&file, C) != 1
         || check_dup(&file, MAP) < 3)
         ft_show_error("Line missing or duplicated on file!\n");
-
     collect_map(&file, &data);
     parse_map(data.head_map);
     check_map_last(file);
-    // t_map *map = data.head_map;
-    // while (map)
-    // {
-    //     printf("%s\n", map->line);
-    //     map = map->next;
-    // }
-    // printf("\n");
-
-    // printf("%s\n",data.north_path );
-    // printf("%s\n",data.south_path );
-    // printf("%s\n",data.west_path );
-    // printf("%s\n",data.east_path );
-    // printf("f1 = %d\n", data.f1);
-    // printf("f2 = %d\n", data.f2);
-    // printf("f3 = %d\n", data.f3);
-    // printf("c1 = %d\n", data.c1);
-    // printf("c2 = %d\n", data.c2);
-    // printf("c3 = %d\n", data.c3);
-    
-    // check_error(map);
-    // return (map);
     return (data);
 }
