@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/08 19:15:14 by monachit         ###   ########.fr       */
+/*   Updated: 2024/10/12 14:18:21 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,24 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 
 void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
 
-int dx = abs((int)end_x - (int)start_x);
-int dy = abs((int)end_y - (int)start_y);
+    int dx = abs((int)end_x - (int)start_x);
+    int dy = abs((int)end_y - (int)start_y);
 
     int sx = (start_x < end_x) ? 1 : -1;
     int sy = (start_y < end_y) ? 1 : -1;
     int err = dx - dy;
 
-    while (1) {
-
-        printf("x == %f y == %f   \n", start_x, start_y);
-        if (start_x > 0 && start_x < 500 && start_y > 0 && start_y < 500)
+    while (1) 
+    {
+        if (start_x >= 0 && start_x < 500 && start_y >= 0 && start_y < 500)
         {
-            my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
+            if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
+                my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
+            else
+                break;
         }
-        else if (start_x == end_x || start_y == end_y  || !(start_x > 0 && start_x < 500 && start_y > 0 && start_y < 500))break;
+        if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
+            break;
         int err2 = err * 2;
         if (err2 > -dy) { err -= dy; start_x += sx; }
         if (err2 < dx) { err += dx; start_y += sy; }
@@ -74,32 +77,23 @@ int dy = abs((int)end_y - (int)start_y);
 }
 
 
+
 void cast_rays(t_vars *vars) {
-    for (int i = 0; i < NUM_RAYS; i++) {
+    for (int i = 0; i < NUM_RAYS; i++)
+    {
         double ray_angle = vars->ray_angles[i];
         double ray_dir_x = cos(ray_angle);
         double ray_dir_y = sin(ray_angle);
-
         double ray_x = vars->p;
         double ray_y = vars->c;
-        double step_size = 1.0;
-
-        while (1) {
-            // Update ray position
-            ray_x += ray_dir_x * step_size;
-            ray_y += ray_dir_y * step_size;
-
-            // Bounds checking
-            if (ray_x < 0 || ray_x >= vars->win_width * 100 || 
-                ray_y < 0 || ray_y >= vars->win_height * 100) {
-                break;
-            }
-
+        while (1)
+        {
+            ray_x += ray_dir_x;
+            ray_y += ray_dir_y;
             int map_x = (int)(ray_x / 100);
             int map_y = (int)(ray_y / 100);
-
-            // Check for wall intersection
-            if (vars->map1[map_y][map_x] == '1') {
+            if (vars->map1[map_y][map_x] == '1')
+            {
                 draw_line(vars, vars->p, vars->c, ray_x, ray_y, 0xFFFFFF); 
                 break;
             }
@@ -125,29 +119,31 @@ void drawing(t_vars *vars)
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }
 
-
 int key_hook(int keycode, t_vars *vars)
 {
-    int next_x = vars->p;
-    int next_y = vars->c;
-
+    double move_speed = 20.0;
+    double rotation_speed = 0.1;
     draw_square(vars, vars->p, vars->c, 20, 0x000000);
-    if (keycode == 119)  // Up (W key)
-        next_y -= 20;
-    else if (keycode == 115)  // Down (S key)
-        next_y += 20;
-    else if (keycode == 97)  // Left (A key)
-        next_x -= 20;
-    else if (keycode == 100)  // Right (D key)
-        next_x += 20;
-    else if (keycode == 65361) // Left arrow
-        vars->direction -= 0.5; // Turn left
-    else if (keycode == 65363) // Right arrow
-        vars->direction += 0.5; // Turn right
-    if (vars->map1[next_y / 100][next_x / 100] != '1')
+    if (keycode == 119)
     {
-        vars->c = next_y;
-        vars->p = next_x;
+        vars->p += cos(vars->direction) * move_speed;
+        vars->c += sin(vars->direction) * move_speed;
+    } 
+    else if (keycode == 115)
+    {
+        vars->p -= cos(vars->direction) * move_speed;
+        vars->c -= sin(vars->direction) * move_speed;
+    } 
+    else if (keycode == 65361)
+        vars->direction -= rotation_speed;
+    else if (keycode == 65363)
+        vars->direction += rotation_speed;
+    int map_y = (int)(vars->c / 100);
+    int map_x = (int)(vars->p/ 100);
+    if (vars->map1[map_y][map_x] != '1')
+    {
+        vars->c = (int)vars->c;
+        vars->p = (int)vars->p;
     }
     drawing(vars);
     return 0;
@@ -193,7 +189,6 @@ void    game_plan(char **map1)
     vars.mlx = mlx_init();
     vars.win_width = ft_strlen(map[0]);
     vars.win_height = 0;
-    // vars.p_1 = 0;
     vars.direction = 0;
     while (map[vars.win_height])
         vars.win_height++;
@@ -220,7 +215,7 @@ void    game_plan(char **map1)
         }
     }
 
-    mlx_key_hook(vars.win, key_hook, &vars);
+    mlx_hook(vars.win, 2, 1L<<0, key_hook, &vars);
     mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
     
     mlx_loop(vars.mlx);
