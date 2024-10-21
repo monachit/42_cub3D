@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/21 13:22:56 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 15:57:12 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,76 +169,52 @@ int map_token(char *s)
         i++;
     }
     return (1);
-    
 }
 
+void    extract_paths(t_read *curr, char **path, int *i2, t_type type)
+{
+    int i = *i2;
+    i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
+    *path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
+    curr->type = type;
+    *i2 = i;
+}
+
+void    extract_colors(t_read *curr, int *n1, int *n2, int *n3, int type, int *i2)
+{
+    int i = *i2;
+    i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
+    if (check_nb_virgul(ft_substr(curr->line, i, extract_len_first_word(curr->line, i))) != 2)
+        ft_show_error("Floor color input invalid!\n");
+    ft_rgb_colors(ft_substr(curr->line, i, extract_len_first_word(curr->line, i)), n1, n2, n3);
+    curr->type = type;
+    *i2 = i;
+}
 
 void    collect_data(t_read **file, t_data *data)
 {
-
     t_read  *curr = *file;
     while (curr)
     {
-
         int i = skip_spaces(curr->line, 0);
         if (!ft_strcmp("NO", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            data->north_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            // curr->line = NULL;
-            curr->type = NO;
-        }
+            extract_paths(curr, &data->north_path, &i, NO);
         else if (!ft_strcmp("SO", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            data->south_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            // curr->line = NULL;
-            curr->type = SO;
-        }
+            extract_paths(curr, &data->south_path, &i, SO);
         else if (!ft_strcmp("WE", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            data->west_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            curr->type = WE;
-        }
+            extract_paths(curr, &data->west_path, &i, WE);
         else if (!ft_strcmp("EA", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            data->east_path = ft_substr(curr->line, i, extract_len_first_word(curr->line, i));
-            curr->type = EA;
-        }
+            extract_paths(curr, &data->east_path, &i, EA);
         else if (!ft_strcmp("F", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            if (check_nb_virgul(ft_substr(curr->line, i, extract_len_first_word(curr->line, i))) != 2)
-                ft_show_error("Floor color input invalid!\n");
-            ft_rgb_colors(ft_substr(curr->line, i, extract_len_first_word(curr->line, i)), &data->f1, 
-                &data->f2, &data->f3);
-            curr->type = F;
-        }
+            extract_colors(curr, &data->f1, &data->f2, &data->f3, F, &i);
         else if (!ft_strcmp("C", ft_substr(curr->line, i, extract_len_first_word(curr->line, i))))
-        {
-            i = skip_spaces(curr->line, extract_len_first_word(curr->line, i));
-            if (check_nb_virgul(ft_substr(curr->line, i, extract_len_first_word(curr->line, i))) != 2)
-                ft_show_error("Ceiling color input invalid!\n");
-            ft_rgb_colors(ft_substr(curr->line, i, extract_len_first_word(curr->line, i)), &data->c1, 
-                &data->c2, &data->c3);
-            curr->type = C;
-        }
+            extract_colors(curr, &data->c1, &data->c2, &data->c3, C, &i);
         else if (curr->nb_words > 0 && map_token(curr->line))
-        {
             curr->type = MAP;
-            // printf("%s", curr->line);
-        }
         else if (ft_strcmp(curr->line, "\n"))
             ft_show_error("invalid line!\n");
-
-            // printf("type = %d, nb_words = %d / %s", curr->type, curr->nb_words, curr->line);
-        // printf("calcul : %d; s = /%s/", curr->nb_words, curr->line);m
-        // printf("TYPE : %d/ NB_WORDS / %d/ LINE : %s\n", curr->type, curr->nb_words, curr->line);
         curr = curr->next;
     }
-    
 }
 
 int check_dup(t_read **file, t_type type)
@@ -365,11 +341,6 @@ void    map_to_char(t_data *data, int len_map)
     data->map[i] = NULL;
 }
 
-// void    check_close(t_data *data, int i, int j)
-// {
-//     if ((data->map[i + 1][j] != '1' || data->map[i - 1][j] != '1' || data->map[i][j + 1] != '1' || data->map[i][j - 1] != '1'))
-//         ft_show_error("map not closed!\n");
-// }
 
 bool    map_characters(t_data *data)
 {
@@ -386,9 +357,9 @@ bool    map_characters(t_data *data)
                 count++;
             if (ft_strchr(s2, data->map[i][j]))
             {
-                if ((data->map[i + 1][j] != 32 || data->map[i - 1][j] != 32 
-                    || data->map[i][j + 1] != 32 || data->map[i][j - 1] != 32))
-                    printf("i = %d &j = %d &map == %c\n", i, j, data->map[i][j]);
+                if ((data->map[i + 1][j] == 32 || data->map[i - 1][j] == 32 
+                    || data->map[i][j + 1] == 32 || data->map[i][j - 1] == 32))
+                    return(false);
             }
             j++;
         }
@@ -404,7 +375,6 @@ void    map_parse(t_data *data)
 {
     if (map_characters(data) == false)
         ft_show_error("Characters in map invalid!\n");
-    
     
 }
 

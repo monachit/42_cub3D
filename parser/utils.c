@@ -42,5 +42,4 @@ void    insert_t_read(t_read **file, char *str)
             curr = curr->next;
         curr->next = new;
     }
-
 }
