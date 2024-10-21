@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:47:33 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/02 18:57:25 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 11:47:14 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ int main(int ac, char **av)
     t_data data;
 
     data = parse(ac, av);
-    
-    t_map *map = data.head_map;
-    while (map)
+
+    int i = 0;
+    while (data.map[i] != NULL)
     {
-        printf("%s\n", map->line);
-        map = map->next;
+        printf("%s\n", data.map[i++]);
     }
     printf("\n");
 

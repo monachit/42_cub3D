@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/04 14:07:28 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 13:01:39 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,11 +270,12 @@ void    insert_map(t_map **map, char *str)
     }
 }
 
-void    collect_map(t_read **read, t_data *data)
+void    collect_map(t_read **read, t_data *data, int *len)
 {
     t_map *map = NULL;
     t_read *curr = *read;
     int flg = 0;
+    int i = 0;
     while (curr)
     {
         if (flg == 1 && curr->type == MAP)
@@ -284,7 +285,8 @@ void    collect_map(t_read **read, t_data *data)
             while (curr && curr->type == MAP)
             {
                 char *s = ft_substr(curr->line, 0, ft_strlen(curr->line) - 1);
-                insert_map(&map, s);            
+                insert_map(&map, s);
+                i++;
                 curr = curr->next;
             }
             flg = 1;
@@ -292,63 +294,8 @@ void    collect_map(t_read **read, t_data *data)
         else
             curr = curr->next;
     }
+    *len = i;
     data->head_map = map;
-}
-
-void    map_closed(t_map *map)
-{
-    int i = 0;
-    while (map->line[i])
-    {
-        if (map->line[i] != 32 && map->line[i] != '1')
-            ft_show_error("Map not closed!\n");
-        i++;
-    }
-    while (map->next)
-    {
-        i = 0;
-        while (map->line[i] == 32)
-            i++;
-        if (map->line[i] != '1')
-            ft_show_error("Map not closed!\n");
-        while (map->line[i])
-            i++;
-        i--;
-        while (map->line[i] == 32)
-            i--;
-        if (map->line[i] != '1')
-            ft_show_error("Map not closed!\n");
-        map = map->next;
-    }
-    i = 0;
-    while (map->line[i])
-    {
-        if (map->line[i] != 32 && map->line[i] != '1')
-            ft_show_error("Map not closed!\n");
-        i++;
-    }
-}
-
-void    check_len_spaces(t_map *map)
-{
-    while (map)
-    {
-        int i = 0;
-        int len = 0;
-        while (map->line[i])
-        {
-            if (map->line[i] == 32)
-                i++;
-            else
-            {
-                i++;
-                len++;
-            }
-        }
-        if (len < 3)
-            ft_show_error("Len of map !\n");
-        map = map->next;
-    }
 }
 
 int calcul_character(t_map *map, char c)
@@ -370,14 +317,6 @@ int calcul_character(t_map *map, char c)
     
 }
 
-void    parse_map(t_map *map)
-{
-    map_closed(map);
-    check_len_spaces(map);
-    if (calcul_character(map, 'N') != 1 || calcul_character(map, 's') > 1
-        || calcul_character(map, 'E') > 1 || calcul_character(map, 'W') > 1)
-        ft_show_error("Characters of map invalid!\n");
-}
 
 void    check_map_last(t_read *file)
 {
@@ -393,31 +332,78 @@ void    check_map_last(t_read *file)
     }
 }
 
-void	free_list(t_read **list)
-{
-	t_read	*curr;
-	t_read	*aux;
+// void	free_list(t_read **list)
+// {
+// 	t_read	*curr;
+// 	t_read	*aux;
 
-	if (!(*list))
-		return ;
-	curr = *list;
-	while (curr != NULL)
-	{
-		aux = curr->next;
-		free(curr);
-		curr = aux;
-	}
-	*list = NULL;
-}
+// 	if (!(*list))
+// 		return ;
+// 	curr = *list;
+// 	while (curr != NULL)
+// 	{
+// 		aux = curr->next;
+// 		free(curr);
+// 		curr = aux;
+// 	}
+// 	*list = NULL;
+// }
 
-void    ft_free_line_read(t_read **file)
+
+void    map_to_char(t_data *data, int len_map)
 {
-    t_read *curr = *file;
+    data->map = (char **)malloc(sizeof(char *) * (len_map + 1));
+    if (!data->map)
+        exit (1);
+    t_map *curr = data->head_map;
+    int i = 0;
     while (curr)
     {
-        free(curr->line);
+        data->map[i++] = ft_strdup(curr->line);
         curr = curr->next;
     }
+    data->map[i] = NULL;
+}
+
+void    check_close(t_data *data, int i, int j)
+{
+    if ((data->map[i + 1][j] != '1' || data->map[i - 1][j] != '1' || data->map[i][j + 1] != '1' || data->map[i][j - 1] != '1'))
+        ft_show_error("map not closed!\n");
+}
+
+bool    map_characters(t_data *data)
+{
+    int i = 0;
+    int count = 0;
+    char *str = "NEWS";
+    char *s2 = "NEWS0";
+    while (data->map[i])
+    {
+        int j = 0;
+        while (data->map[i][j])
+        {
+            if (ft_strchr(str, data->map[i][j]))
+                count++;
+            // if (ft_strchr(s2, data->map[i][j]))
+            // {
+            //     check_close(data, i, j);
+            // }
+            j++;
+        }
+        i++;
+    }
+    if (count != 1)
+        return (false);
+    else
+        return (true);
+}
+
+void    map_parse(t_data *data)
+{
+    if (map_characters(data) == false)
+        ft_show_error("Characters in map invalid!\n");
+    
+    
 }
 
 t_data  parse(int ac, char **av)
@@ -436,8 +422,10 @@ t_data  parse(int ac, char **av)
         || check_dup(&file, EA) != 1 || check_dup(&file, F) != 1 || check_dup(&file, C) != 1
         || check_dup(&file, MAP) < 3)
         ft_show_error("Line missing or duplicated on file!\n");
-    collect_map(&file, &data);
-    parse_map(data.head_map);
     check_map_last(file);
+    int len_map;
+    collect_map(&file, &data, &len_map);
+    map_to_char(&data, len_map);
+    map_parse(&data);
     return (data);
 }

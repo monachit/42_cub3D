@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/02 16:26:40 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 11:51:34 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include "mlx/mlx.h"
 # include "get_next_line/get_next_line.h"
@@ -58,6 +59,7 @@ typedef	struct t_data
 	int			f2;
 	int			f3;
 	t_map		*head_map;
+	char		**map;
 }	t_data;
 
 
