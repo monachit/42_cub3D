@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/21 13:01:39 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 13:22:56 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,11 +365,11 @@ void    map_to_char(t_data *data, int len_map)
     data->map[i] = NULL;
 }
 
-void    check_close(t_data *data, int i, int j)
-{
-    if ((data->map[i + 1][j] != '1' || data->map[i - 1][j] != '1' || data->map[i][j + 1] != '1' || data->map[i][j - 1] != '1'))
-        ft_show_error("map not closed!\n");
-}
+// void    check_close(t_data *data, int i, int j)
+// {
+//     if ((data->map[i + 1][j] != '1' || data->map[i - 1][j] != '1' || data->map[i][j + 1] != '1' || data->map[i][j - 1] != '1'))
+//         ft_show_error("map not closed!\n");
+// }
 
 bool    map_characters(t_data *data)
 {
@@ -384,10 +384,12 @@ bool    map_characters(t_data *data)
         {
             if (ft_strchr(str, data->map[i][j]))
                 count++;
-            // if (ft_strchr(s2, data->map[i][j]))
-            // {
-            //     check_close(data, i, j);
-            // }
+            if (ft_strchr(s2, data->map[i][j]))
+            {
+                if ((data->map[i + 1][j] != 32 || data->map[i - 1][j] != 32 
+                    || data->map[i][j + 1] != 32 || data->map[i][j - 1] != 32))
+                    printf("i = %d &j = %d &map == %c\n", i, j, data->map[i][j]);
+            }
             j++;
         }
         i++;
