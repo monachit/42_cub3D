@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall 
 
 SRCS = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c game.c \
-		parser/parsing.c parser/utils.c
+		parser/parsing.c parser/utils.c parser/utils2.c parser/utils3.c
 
 OBJS = $(SRCS:.c=.o)
 

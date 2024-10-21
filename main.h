@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/21 11:51:34 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 16:23:17 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,20 @@ t_data  parse(int ac, char **av);
 void    ft_show_error(char *str);
 int 	calcul_words(char *str);
 void    insert_t_read(t_read **file, char *str);
+int 	check_name(char *name);
+t_read  *read_file(char *av);
+int 	ft_strcmp(const char *s1, const char *s2);
+void    init_data(t_data *data);
+int 	extract_len_first_word(char *s, int i);
+int 	skip_spaces(char *s, int i);
+int		ft_atoi_lhbal(char *str);
+int 	check_nb_virgul(char *s);
+void    ft_rgb_colors(char *s, int *nbr1, int *nbr2, int *nbr3);
+int 	map_token(char *s);
+void    extract_paths(t_read *curr, char **path, int *i2, t_type type);
+void    extract_colors(t_read *curr, int *n1, int *n2, int *n3, int type, int *i2);
+void    collect_data(t_read **file, t_data *data);
+
 
 
 #endif
