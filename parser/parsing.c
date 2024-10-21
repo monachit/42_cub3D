@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/21 16:21:43 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/21 20:42:12 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ bool    map_characters(t_data *data)
                 count++;
             if (ft_strchr(s2, data->map[i][j]))
             {
-                if ((data->map[i + 1][j] == 32 || data->map[i - 1][j] == 32 
+                if (! data->map[i + 1] || (data->map[i + 1][j] == 32 || data->map[i - 1][j] == 32 
                     || data->map[i][j + 1] == 32 || data->map[i][j - 1] == 32))
                     return(false);
             }
@@ -169,8 +169,7 @@ t_data  parse(int ac, char **av)
     init_data(&data);
     collect_data(&file, &data);
     if (check_dup(&file, NO) != 1 || check_dup(&file, SO) != 1 || check_dup(&file, WE) != 1
-        || check_dup(&file, EA) != 1 || check_dup(&file, F) != 1 || check_dup(&file, C) != 1
-        || check_dup(&file, MAP) < 3)
+        || check_dup(&file, EA) != 1 || check_dup(&file, F) != 1 || check_dup(&file, C) != 1)
         ft_show_error("Line missing or duplicated on file!\n");
     check_map_last(file);
     int len_map;
