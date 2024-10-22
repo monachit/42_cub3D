@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/12 14:18:21 by monachit         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:17:23 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,12 @@ int key_hook(int keycode, t_vars *vars)
     double move_speed = 20.0;
     double rotation_speed = 0.1;
     draw_square(vars, vars->p, vars->c, 20, 0x000000);
-    if (keycode == 119)
+    if (keycode == 113)  // Up (W key) 13
     {
         vars->p += cos(vars->direction) * move_speed;
         vars->c += sin(vars->direction) * move_speed;
     } 
-    else if (keycode == 115)
+    else if (keycode == 115)  // Down (S key) 1
     {
         vars->p -= cos(vars->direction) * move_speed;
         vars->c -= sin(vars->direction) * move_speed;
@@ -172,18 +172,19 @@ void    set_pos(char **map, int *a, int *b)
     }
 }
 
-void    game_plan(char **map1)
+void    game_plan(t_data *data)
 {
     t_vars vars;
 
-    char *map[] = {
-        "1111",
-        "1001",
-        "1001",
-        "10N1",
-        "1111",
-        NULL
-    };
+    char **map = data->map;
+    // char *map[] = {
+    //     "1111",
+    //     "1001",
+    //     "1001",
+    //     "10N1",
+    //     "1111",
+    //     NULL
+    // };
 
     vars.map1 = map;
     vars.mlx = mlx_init();
