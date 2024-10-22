@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/21 16:23:17 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/10/22 09:04:29 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include <fcntl.h>
 # include "mlx/mlx.h"
 # include "get_next_line/get_next_line.h"
+# include <math.h>
+
+#define PI 3.141592653589793
+#define NUM_RAYS 10
+#define length_ray  10;
 
 typedef enum t_type{
 	INIT,
@@ -65,27 +70,40 @@ typedef	struct t_data
 
 typedef struct s_vars
 {
-	char	**map1;
-	int		player_x;
-	int		player_y;
-	int		heigth;
-	int		width;
-	void	*mlx;
-	void	*win;
-	void	*img;
-		char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int p_x;
-	int p_y;
-	int win_width;
-	int win_height;
-	int c;
-	int p;
-}	t_vars;
+    char    **map1;
+    int     player_x;
+    int     player_y;
+    int     heigth;
+    int     width;
+    int     p_1;
+    void    *mlx;
+    void    *win;
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     p_x;
+    int     p_y;
+    int     win_width;
+    int     win_height;
+    int     c;
+    int     p;
+	double ray_angles[NUM_RAYS];
 
-void    game_plan(char **map);
+  double direction;
+} t_vars;
+
+
+typedef struct s_vector
+{
+	double d_x;
+	double d_y;
+	
+}	vector;
+
+
+void    game_plan(t_data *t_data);
 
 // parsing
 t_data  parse(int ac, char **av);
