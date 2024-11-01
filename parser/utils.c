@@ -2,44 +2,55 @@
 
 void    ft_show_error(char *str)
 {
-    write(1, "Error\n", 6);
-    write(1, str, ft_strlen(str));
+    write(2, "Error\n", 6);
+    write(2, str, ft_strlen(str));
     exit (1);
 }
 
-
-int calcul_words(char *str)
+int ft_strcmp(const char *s1, const char *s2)
 {
     int i = 0;
-    int calcul = 0;
-    while(str[i] && str[i] != '\n')
-    {
-        while (str[i] == 32)
-            i++;
-        if (str[i] && str[i] != 32 && str[i] != '\n')
-        {
-            calcul++;
-            while (str[i] && str[i] != 32 && str[i] != '\n')
-                i++;
-        }
-    }
-    return (calcul);
+
+    while (s1[i] && s1[i] == s2[i])
+        i++;
+    return (unsigned char)s1[i] - (unsigned char)s2[i];
 }
 
-void    insert_t_read(t_read **file, char *str)
+int	ft_atoi_lhbal(char *str)
 {
-    t_read *new = malloc(sizeof(t_read));
-    new->line = str;
-    new->nb_words = calcul_words(str);
-    new->type = INIT;
-    new->next = NULL;
-    if (!(*file))
-        *file = new;
-    else
+	int	i;
+	int	res;
+	int	prev;
+
+	i = 0;
+	res = 0;
+	prev = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		prev = res;
+		res = res * 10 + str[i] - 48;
+		if (prev != res / 10)
+			return (-1);
+		i++;
+	}
+	return (res);
+}
+
+int check_name(char *name)
+{
+    int i;
+
+    i = 0;
+    while (name[i])
     {
-        t_read *curr = *file;
-        while (curr->next)
-            curr = curr->next;
-        curr->next = new;
+        if (name[i] == '.')
+        {
+            if (name[i + 1] == 'c' && name[i + 2] == 'u' && name[i + 3] == 'b' && name[i + 4] == '\0')
+                return (0);
+            else
+                return (1);
+        }
+        i++;
     }
+    return (1);
 }
