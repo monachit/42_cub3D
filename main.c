@@ -21,7 +21,7 @@ int main(int ac, char **av)
 
 
 
-    // game_plan(&data);
+    game_plan(&data);
 
     return (0);
 }
