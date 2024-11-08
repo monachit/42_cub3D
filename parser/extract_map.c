@@ -41,7 +41,8 @@ bool    parse_map(char **map)
                 if (i == 0 || j == 0 || !map[i + 1] || !map[i][j + 1])
                     return (false);
                 if (map[i][j + 1] == 32 || map[i][j - 1] == 32 || map[i + 1][j] == 32
-                    || map[i - 1][j] == 32)
+                    || map[i - 1][j] == 32 || !map[i][j + 1] || !map[i][j - 1] 
+                    || !map[i + 1][j] || !map[i - 1][j])
                     return (false);
             }
             j++;
@@ -56,7 +57,6 @@ char    **extract_map(t_read *file, t_data *data, int len)
     char **strs = (char **)malloc(sizeof(char *) * (len + 1));
     if (!strs)
         exit (EXIT_FAILURE);
-
     int i = 0;
     while (file)
     {
@@ -73,12 +73,10 @@ char    **extract_map(t_read *file, t_data *data, int len)
         }
         file = file->next;
     }
-
     if (!check_player(strs) || !parse_map(strs))
     {
         //free lmap + read
         ft_show_error("Map not valid");
     }
-
     return (strs);    
 }

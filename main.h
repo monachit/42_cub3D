@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/11/01 00:51:47 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/11/08 16:28:27 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef	struct t_data
 }	t_data;
 
 
+
 typedef struct s_vars
 {
     char    **map1;
@@ -89,6 +90,18 @@ typedef struct s_vars
 } t_vars;
 
 
+typedef	struct t_game
+{
+	t_data	input;
+	
+	// mlx
+	void	*mlx;
+	int		win_height;
+	int		win_width;
+}	t_game;
+
+
+
 typedef struct s_vector
 {
 	double d_x;
@@ -97,7 +110,6 @@ typedef struct s_vector
 }	vector;
 
 
-void    game_plan(t_data *t_data);
 
 // parsing
 t_data  parse(int ac, char **av);
@@ -128,5 +140,8 @@ void    extract_paths(t_read *file, t_data *data);
 
 // extract map
 char    **extract_map(t_read *file, t_data *data, int len);
+
+
+
 
 #endif

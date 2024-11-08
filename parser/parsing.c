@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 14:35:17 by monachit          #+#    #+#             */
-/*   Updated: 2024/11/01 22:06:28 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/11/02 11:25:42 by younesounaj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,5 @@ t_data  parse(int ac, char **av)
     //HNAYA FREEYI READ YA ZWIWN DIAL MAMAH
 
 
-    // printf("%d\n", data.c1);
-    // printf("%d\n", data.c2);
-    // printf("%d\n", data.c3);
-    // printf("%d\n", data.f1);
-    // printf("%d\n", data.f2);
-    // printf("%d\n", data.f3);
-
-    // printf("no = **%s**\n", data.north_path);
-    // printf("so = **%s**\n", data.south_path);
-    // printf("we = **%s**\n", data.west_path);
-    // printf("ea = **%s**\n", data.east_path);
-    
-    // int i = 0;
-    // while (data.map[i])
-    // {
-    //     printf("%s\n", data.map[i++]);
-    // }
-
+    return (data);
 }
