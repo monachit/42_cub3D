@@ -76,6 +76,15 @@ void draw_line(t_vars *vars, double start_x, double start_y, double end_x, doubl
     }
 }
 
+float nor_angle(float angle)
+{
+	if (angle < 0)
+		angle += (2 * M_PI);
+	if (angle > (2 * M_PI))
+		angle -= (2 * M_PI);
+	return (angle);
+}
+
 int     until_circle(double angl, char c)
 {
     if (c == 'x')
@@ -93,15 +102,16 @@ int     until_circle(double angl, char c)
 
 int    wall_check(double x, double y, t_vars *vars)
 {
-    static int i = 0;
     int mx, my;
 
     mx = (int )x / TILE_SIZE;
     my = (int) y / TILE_SIZE;
     
+    if (mx >= vars->win_width || my >= vars->win_height)
+        return (0);
+     if  (vars->map1[mx][my] == '1')
+        return (0);
     printf("%d   %d\n", mx, my);
-    if (i == 10) exit(1);
-    i++;
     return (1);
 }
 
@@ -123,6 +133,7 @@ double get_h_inter(t_vars *vars, double angl)
         h_x += x_step;
         h_y += y_step;
     }
+    // printf("%f   %f q\n", h_x, h_y);
 }
 
 double  get_v_inter(t_vars *vars, double angl)
@@ -157,9 +168,13 @@ void cast_rays(t_vars *vars)
     first_ray = 0 - FOV / 2;
     while (ray < S_W)
     {
-        get_v_inter(vars, first_ray);
+        // get_h_inter(vars, nor_angle(first_ray));
         first_ray += (FOV / S_W);
         ray++;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        printf("vars->map %s\n", vars->map1);
     }
 }
 
@@ -236,15 +251,15 @@ void    game_plan(t_data *data)
 {
     t_vars vars;
 
-    // char **map = data->map;
-    char *map[] = {
-        "1111",
-        "1001",
-        "1001",
-        "10N1",
-        "1111",
-        NULL
-    };
+    char **map = data->map;
+    // char *map[] = {
+    //     "1111",
+    //     "1001",
+    //     "1001",
+    //     "10N1",
+    //     "1111",
+    //     NULL
+    // };
 
     vars.map1 = map;
     vars.mlx = mlx_init();

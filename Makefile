@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall 
+CFLAGS = -Wall -fsanitize=address
 
 SRCS = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c game.c \
 		parser/parsing.c parser/utils.c parser/read_file.c parser/check_file.c \
