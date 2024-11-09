@@ -50,31 +50,31 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 	}
 }
 
-void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
+// void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
 
-    int dx = abs((int)end_x - (int)start_x);
-    int dy = abs((int)end_y - (int)start_y);
+//     int dx = abs((int)end_x - (int)start_x);
+//     int dy = abs((int)end_y - (int)start_y);
 
-    int sx = (start_x < end_x) ? 1 : -1;
-    int sy = (start_y < end_y) ? 1 : -1;
-    int err = dx - dy;
+//     int sx = (start_x < end_x) ? 1 : -1;
+//     int sy = (start_y < end_y) ? 1 : -1;
+//     int err = dx - dy;
 
-    while (1) 
-    {
-        if (start_x >= 0 && start_x < 500 && start_y >= 0 && start_y < 500)
-        {
-            if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
-                my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
-            else
-                break;
-        }
-        if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
-            break;
-        int err2 = err * 2;
-        if (err2 > -dy) { err -= dy; start_x += sx; }
-        if (err2 < dx) { err += dx; start_y += sy; }
-    }
-}
+//     while (1) 
+//     {
+//         if (start_x >= 0 && start_x < 500 && start_y >= 0 && start_y < 500)
+//         {
+//             if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
+//                 my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
+//             else
+//                 break;
+//         }
+//         if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
+//             break;
+//         int err2 = err * 2;
+//         if (err2 > -dy) { err -= dy; start_x += sx; }
+//         if (err2 < dx) { err += dx; start_y += sy; }
+//     }
+// }
 
 double	nor_angle(double angle)
 {
@@ -124,32 +124,53 @@ int    wall_check(double x, double y, t_vars *vars)
 {
     int mx, my;
 
-    mx = (int)floor(x / TILE_SIZE);
-    my = (int)floor( y / TILE_SIZE);
+    mx = (int)x / TILE_SIZE;
+    my = (int) y / TILE_SIZE;
     
     if (mx < 0 || my < 0 || mx >= vars->win_width || my >= vars->win_height )
         return (0);
-     if  (vars->map1[mx][my] == '1')
+     if  (vars->map1[my][mx] == '1')
         return (0);
     return (1);
 }
-
+int inter_check(double angle, double *inter, double *step, int is_horizon)
+{
+	if (is_horizon)
+	{
+		if (angle > 0 && angle < M_PI)
+		{
+			*inter += TILE_SIZE;
+			return (-1);
+		}
+		*step *= -1;
+	}
+	else
+	{
+		if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2)) 
+		{
+			*inter += TILE_SIZE;
+			return (-1);
+		}
+		*step *= -1;
+	}
+	return (1);
+}
 double get_h_inter(t_vars *vars, double angl)
 {
     double h_x;
     double h_y;
     double x_step;
     double y_step;
+    int pixel;
 
     y_step = TILE_SIZE;
     x_step = TILE_SIZE / tan(angl);
     h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE;
-    if (is_ray_facing_down(angl))
-        h_y += TILE_SIZE;
-    h_x = vars->p_x + (h_y - vars->p_y) * tan(angl);
-    if ((until_circle(angl, 'y') && x_step < 0 ) || !(until_circle(angl, 'y') && x_step > 0))
+    pixel = inter_check(angl, &h_y, &y_step, 1);
+    h_x = vars->p_x + (h_y - vars->p_y) / tan(angl);
+    if ((until_circle(angl, 'y') && x_step > 0 ) || !(until_circle(angl, 'y') && x_step < 0))
         x_step *= -1;
-    while (wall_check(h_x, h_y, vars))
+    while (wall_check(h_x, h_y - pixel, vars))
     {
         h_x += x_step;
         h_y += y_step;
@@ -163,16 +184,16 @@ double  get_v_inter(t_vars *vars, double angl)
     double v_y;
     double x_step;
     double y_step;
+    int pixel;
 
     x_step = TILE_SIZE;
     y_step = TILE_SIZE * tan(angl);
     v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE;
-    if (is_ray_facing_r(angl))
-        v_x += TILE_SIZE;
+    pixel = inter_check(angl, &v_x, &x_step, 0);
     v_y = vars->p_y + (v_x - vars->p_x) * tan(angl);
     if ((until_circle(angl, 'x') && y_step < 0 ) || !(until_circle(angl, 'x') && y_step > 0))
         y_step *= -1;
-    while (wall_check(v_x, v_y, vars))
+    while (wall_check(v_x - pixel, v_y, vars))
     {
         v_x += x_step;
         v_y += y_step;
@@ -181,7 +202,23 @@ double  get_v_inter(t_vars *vars, double angl)
     return (sqrt(pow(v_x -  vars->p_x, 2) + pow(v_y - vars->p_y, 2)));
 }
 
-// void rander_wall()
+void rander_wall(t_vars *vars, int ray)
+{
+    double wall_h;
+    double bottom_p;
+    double top_p;
+
+    wall_h = (TILE_SIZE / vars->distence) * (vars->win_width * 100/ 2) / tan(FOV / 2);
+    top_p = (900 / 2) - (wall_h /2);
+    bottom_p = (900 / 2) + (wall_h /2);
+
+    if (top_p < 0)
+        top_p = 0;
+    if (bottom_p > 900)
+        bottom_p = 900;
+    while (top_p < bottom_p)
+        my_mlx_pixel_put(vars, ray, top_p++, 0xFFFFFF);
+}
 
 void cast_rays(t_vars *vars)
 {
@@ -202,9 +239,9 @@ void cast_rays(t_vars *vars)
             vars->distence = x_inter;
         else
             vars->distence = h_inter;
-        draw_line(vars, vars->p_x, vars->p_y, vars->p_x + cos(first_ray) * vars->distence, vars->p_y + sin(first_ray) * vars->distence, 0xFFFFFF);
+        // draw_line(vars, vars->p_x, vars->p_y, vars->p_x + cos(first_ray) * vars->distence, vars->p_y + sin(first_ray) * vars->distence, 0xFFFFFF);
         first_ray += add_angl;
-        // rander_wall(vars);
+        rander_wall(vars, ray);
         ray++;
     }
 
@@ -213,15 +250,15 @@ void cast_rays(t_vars *vars)
 void drawing(t_vars *vars)
 {    
     clear_image(vars, 0x000000); 
-    draw_square(vars, vars->p_x, vars->p_y, 20, 0xFF6FFF);
-    for (int i = 0; i < vars->win_height; i++) 
-    {
-        for (int j = 0; j < vars->win_width; j++) 
-        {
-            if (vars->map1[i][j] == '1')
-                draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF); 
-        }
-    }
+    // draw_square(vars, vars->p_x, vars->p_y, 20, 0xFF6FFF);
+    // for (int i = 0; i < vars->win_height; i++) 
+    // {
+    //     for (int j = 0; j < vars->win_width; j++) 
+    //     {
+    //         if (vars->map1[i][j] == '1')
+    //             draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF); 
+    //     }
+    // }
     cast_rays(vars);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }
@@ -232,28 +269,21 @@ int key_hook(int keycode, t_vars *vars)
     double rotation_speed = 0.1;
     if (keycode == 13)  // Up (W key) 113
     {
-        vars->p_y += cos(vars->direction) * move_speed;
-        vars->p_x += sin(vars->direction) * move_speed;
+        vars->p_x += cos(vars->direction) * move_speed;
+        vars->p_y += sin(vars->direction) * move_speed;
     } 
     else if (keycode == 1)  // Down (S key) 115
     {
-        vars->p_y -= cos(vars->direction) * move_speed;
-        vars->p_x -= sin(vars->direction) * move_speed;
+        vars->p_x -= cos(vars->direction) * move_speed;
+        vars->p_y -= sin(vars->direction) * move_speed;
     } 
     else if (keycode == 123)  // Left (A key) 97
         vars->direction -= rotation_speed;
     else if (keycode == 124)  // Right (D key) 100 on linux
         vars->direction += rotation_speed;
-    // int map_y = (int)(vars->p_x / 100);
-    // int map_x = (int)(vars->p_y / 100);
-    // if (vars->map1[map_y][map_x] == '1')
-    // {
-    //     vars->p_x = vars->p_x;
-    //     vars->p_y = vars->p_y;
-    // }
-    draw_square(vars, vars->p_x, vars->p_y, 20, 0x000000);
+
+    // draw_square(vars, vars->p_x, vars->p_y, 20, 0x000000);
     vars->direction = nor_angle(vars->direction);
-    printf ("%d\n", (int)(vars->direction * (180.0 / PI)));
     drawing(vars);
     return 0;
 }
@@ -314,14 +344,13 @@ void    game_plan(t_data *data)
             {
                 vars.p_x = i * 100 + (50);
                 vars.p_y = j * 100 + (50);
-                draw_square(&vars, vars.p_x, vars.p_y, 20, 0xFF6FFF);
+                
             }
-            if (data->map[j][i] == '1')
-                draw_square(&vars, vars.p_x , vars.p_y, 100, 0xFF6FFF);
                 
         }
     }
-
+    // printf("%d\n", vars.win_width);
+    // printf("%d\n", vars.win_height);
     mlx_hook(vars.win, 2, 1L<<0, key_hook, &vars);
     mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
     
