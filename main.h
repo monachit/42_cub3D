@@ -23,8 +23,11 @@
 # include <math.h>
 
 #define PI 3.141592653589793
-#define NUM_RAYS 10
-#define length_ray  10;
+#define length_ray  10
+#define FOV  60 * (PI / 180)
+#define S_W 1000
+#define S_H 1000
+#define TILE_SIZE 100
 
 typedef enum t_type{
 	INIT,
@@ -78,27 +81,15 @@ typedef struct s_vars
     int     bits_per_pixel;
     int     line_length;
     int     endian;
-    int     p_x;
-    int     p_y;
+	double	distence;
+    double     p_x;
+    double     p_y;
     int     win_width;
     int     win_height;
     int     c;
     int     p;
-	double ray_angles[NUM_RAYS];
-
   double direction;
 } t_vars;
-
-
-typedef	struct t_game
-{
-	t_data	input;
-	
-	// mlx
-	void	*mlx;
-	int		win_height;
-	int		win_width;
-}	t_game;
 
 
 
@@ -113,7 +104,7 @@ typedef struct s_vector
 
 // parsing
 t_data  parse(int ac, char **av);
-
+void    game_plan(t_data *t_data);
 // utils
 int 	check_name(char *name);
 t_read  *read_file(char *av);

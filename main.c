@@ -15,28 +15,11 @@
 
 int main(int ac, char **av)
 {
-    t_game game;
+    t_data data;
 
-    game.input = parse(ac, av);
-    printf("%d\n", game.input.c1);
-    printf("%d\n", game.input.c2);
-    printf("%d\n", game.input.c3);
-    printf("%d\n", game.input.f1);
-    printf("%d\n", game.input.f2);
-    printf("%d\n", game.input.f3);
-
-    printf("no = **%s**\n", game.input.north_path);
-    printf("so = **%s**\n", game.input.south_path);
-    printf("we = **%s**\n", game.input.west_path);
-    printf("ea = **%s**\n", game.input.east_path);
-    
-    int i = 0;
-    while (game.input.map[i])
-    {
-        printf("%s\n", game.input.map[i++]);
-    }
+    data = parse(ac, av);
 
 
-
+    game_plan(&data);
     return (0);
 }
