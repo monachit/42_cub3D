@@ -50,59 +50,39 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 	}
 }
 
-// void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
+void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
 
-//     int dx = abs((int)end_x - (int)start_x);
-//     int dy = abs((int)end_y - (int)start_y);
+    int dx = abs((int)end_x - (int)start_x);
+    int dy = abs((int)end_y - (int)start_y);
 
-//     int sx = (start_x < end_x) ? 1 : -1;
-//     int sy = (start_y < end_y) ? 1 : -1;
-//     int err = dx - dy;
+    int sx = (start_x < end_x) ? 1 : -1;
+    int sy = (start_y < end_y) ? 1 : -1;
+    int err = dx - dy;
 
-//     while (1) 
-//     {
-//         if (start_x >= 0 && start_x < 500 && start_y >= 0 && start_y < 500)
-//         {
-//             if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
-//                 my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
-//             else
-//                 break;
-//         }
-//         if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
-//             break;
-//         int err2 = err * 2;
-//         if (err2 > -dy) { err -= dy; start_x += sx; }
-//         if (err2 < dx) { err += dx; start_y += sy; }
-//     }
-// }
+    while (1) 
+    {
+        if (start_x >= 0 && start_x < 900 && start_y >= 0 && start_y < 900)
+        {
+            if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
+                my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
+            else
+                break;
+        }
+        if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
+            break;
+        int err2 = err * 2;
+        if (err2 > -dy) { err -= dy; start_x += sx; }
+        if (err2 < dx) { err += dx; start_y += sy; }
+    }
+}
 
-double	nor_angle(double angle)
+double nor_angle(double angle)
 {
-	angle = fmod(angle, 2 * M_PI);
 	if (angle < 0)
-		angle = (2 * M_PI) + angle;
+		angle += (2 * M_PI);
+	if (angle > (2 * M_PI))
+		angle -= (2 * M_PI);
 	return (angle);
-}
-
-
-int	is_ray_facing_down(float rayAngle)
-{
-	return (rayAngle > 0 && rayAngle < M_PI);
-}
-
-int	is_ray_facing_up(float rayAngle)
-{
-	return (!is_ray_facing_down(rayAngle));
-}
-
-int	is_ray_facing_right(float rayAngle)
-{
-	return (rayAngle < 0.5 * M_PI || rayAngle > 1.5 * M_PI);
-}
-
-int	is_ray_facing_left(float rayAngle)
-{
-	return (!is_ray_facing_right(rayAngle));
 }
 
 int     until_circle(double angl, char c)
@@ -157,57 +137,60 @@ int inter_check(double angle, double *inter, double *step, int is_horizon)
 }
 double get_h_inter(t_vars *vars, double angl)
 {
-    double h_x;
-    double h_y;
-    double x_step;
-    double y_step;
-    int pixel;
+    double h_x, h_y;
+    double x_step, y_step;
 
-    y_step = TILE_SIZE;
-    x_step = TILE_SIZE / tan(angl);
-    h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE;
-    pixel = inter_check(angl, &h_y, &y_step, 1);
+    if (angl > 0 && angl < M_PI)
+        h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+    else 
+        h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE;
+    
     h_x = vars->p_x + (h_y - vars->p_y) / tan(angl);
-    if ((until_circle(angl, 'y') && x_step > 0 ) || !(until_circle(angl, 'y') && x_step < 0))
-        x_step *= -1;
-    while (wall_check(h_x, h_y - pixel, vars))
+    if (angl > 0 && angl < M_PI)
+        y_step = TILE_SIZE;
+    else
+        y_step = -TILE_SIZE;
+    x_step = y_step / tan(angl);
+    while (wall_check(h_x, h_y, vars))
     {
         h_x += x_step;
         h_y += y_step;
     }
-    return (sqrt(pow(h_x -  vars->p_x, 2) + pow(h_y - vars->p_y, 2)));
+    
+    return sqrt(pow(h_x - vars->p_x, 2) + pow(h_y - vars->p_y, 2));
 }
 
-double  get_v_inter(t_vars *vars, double angl)
+double get_v_inter(t_vars *vars, double angl)
 {
-    double v_x;
-    double v_y;
-    double x_step;
-    double y_step;
-    int pixel;
+    double v_x, v_y;
+    double x_step, y_step;
 
-    x_step = TILE_SIZE;
-    y_step = TILE_SIZE * tan(angl);
-    v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE;
-    pixel = inter_check(angl, &v_x, &x_step, 0);
+    if (angl < M_PI_2 || angl > 3 * M_PI_2)
+        v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+    else
+        v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE;
     v_y = vars->p_y + (v_x - vars->p_x) * tan(angl);
-    if ((until_circle(angl, 'x') && y_step < 0 ) || !(until_circle(angl, 'x') && y_step > 0))
-        y_step *= -1;
-    while (wall_check(v_x - pixel, v_y, vars))
+    if (angl < M_PI_2 || angl > 3 * M_PI_2)
+        x_step = TILE_SIZE;
+    else 
+        x_step = -TILE_SIZE;
+    y_step = x_step * tan(angl);
+    while (wall_check(v_x, v_y, vars))
     {
         v_x += x_step;
         v_y += y_step;
-   
     }
-    return (sqrt(pow(v_x -  vars->p_x, 2) + pow(v_y - vars->p_y, 2)));
+    return sqrt(pow(v_x - vars->p_x, 2) + pow(v_y - vars->p_y, 2));
 }
 
-void rander_wall(t_vars *vars, int ray)
+
+void rander_wall(t_vars *vars, int ray, double ray_a)
 {
     double wall_h;
     double bottom_p;
     double top_p;
 
+    // vars->distence *= cos(nor_angle(ray_a - M_PI));
     wall_h = (TILE_SIZE / vars->distence) * (vars->win_width * 100/ 2) / tan(FOV / 2);
     top_p = (900 / 2) - (wall_h /2);
     bottom_p = (900 / 2) + (wall_h /2);
@@ -241,7 +224,7 @@ void cast_rays(t_vars *vars)
             vars->distence = h_inter;
         // draw_line(vars, vars->p_x, vars->p_y, vars->p_x + cos(first_ray) * vars->distence, vars->p_y + sin(first_ray) * vars->distence, 0xFFFFFF);
         first_ray += add_angl;
-        rander_wall(vars, ray);
+        rander_wall(vars, ray, first_ray);
         ray++;
     }
 
@@ -250,7 +233,7 @@ void cast_rays(t_vars *vars)
 void drawing(t_vars *vars)
 {    
     clear_image(vars, 0x000000); 
-    // draw_square(vars, vars->p_x, vars->p_y, 20, 0xFF6FFF);
+    // // draw_square(vars, vars->p_x, vars->p_y, 20, 0xFF6FFF);
     // for (int i = 0; i < vars->win_height; i++) 
     // {
     //     for (int j = 0; j < vars->win_width; j++) 
