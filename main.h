@@ -25,8 +25,8 @@
 #define PI 3.141592653589793
 #define length_ray  10
 #define FOV  60 * (PI / 180)
-#define S_W 900
-#define S_H 900
+// #define S_W 900
+// #define S_H 900
 #define TILE_SIZE 100
 
 typedef enum t_type{

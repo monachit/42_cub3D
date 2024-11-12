@@ -26,6 +26,8 @@ void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
 {
 	char	*dst;
 
+    if ((y >= data->win_height * 100) || (x  >= data->win_width * 100))
+        return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
@@ -199,8 +201,8 @@ void rander_wall(t_vars *vars, int ray, double ray_a)
 
     if (top_p < 0)
         top_p = 0;
-    if (bottom_p > 900)
-        bottom_p = 900;
+    if (bottom_p > vars->win_height * 100)
+        bottom_p = vars->win_height * 100;
     while (top_p <= bottom_p)
         my_mlx_pixel_put(vars, ray, (int)top_p++, 0xFFFFFF);
 }
@@ -212,11 +214,13 @@ void cast_rays(t_vars *vars)
     double h_inter;
     double  add_angl;
 
-    add_angl = (FOV / S_W);
+    add_angl = (FOV / (vars->win_width* 100));
     int ray = 0;
 
+    printf("%d\n", vars->win_width* 100);
+    
     first_ray = vars->direction - (FOV / 2);
-    while (ray < S_W)
+    while (ray < vars->win_width * 100)
     {
         x_inter = get_v_inter(vars, nor_angle(first_ray)); // vertical
         h_inter = get_h_inter(vars, nor_angle(first_ray)); // horizontal 
@@ -336,21 +340,20 @@ void    game_plan(t_data *data)
         ft_show_error("mlx_new_window function fails");
     vars.img = mlx_new_image(vars.mlx, vars.win_width * 100, vars.win_height * 100);
     vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel, &vars.line_length, &vars.endian);
-    for (int j = 0; j < vars.win_width; j++)
+    for (int j = 0; j < vars.win_height; j++)
     {
-        for (int i = 0; i < vars.win_height; i++)
+        for (int i = 0; i < vars.win_width; i++)
         {
             if (data->map[j][i] == 'N')
             {
-                vars.p_x = i * 100 + (50);
-                vars.p_y = j * 100 + (50);
+                vars.p_x = i * 100;
+                vars.p_y = j * 100;
                 
             }
                 
         }
     }
-    // printf("%d\n", vars.win_width);
-    // printf("%d\n", vars.win_height);
+    // printf("%d\n", vars.win_height* 100);
     mlx_hook(vars.win, 2, 1L<<0, key_hook, &vars);
     mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
     
