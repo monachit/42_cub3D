@@ -16,7 +16,7 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -L./mlx -lmlx -framework OpenGL -framework AppKit
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lmlx -lX11 -lXext -lm
 
 $(LIBFT):
 	make -C libft

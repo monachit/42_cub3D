@@ -6,7 +6,7 @@
 /*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/10/22 09:05:55 by younesounaj      ###   ########.fr       */
+/*   Updated: 2024/11/29 06:51:00 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,19 +261,19 @@ int key_hook(int keycode, t_vars *vars)
 
     new_x = vars->p_x;
     new_y = vars->p_y;
-    if (keycode == 13)  // Up (W key) 113
+    if (keycode == 119)  // Up (W key) 113
     {
         new_x += cos(vars->direction) * move_speed;
         new_y += sin(vars->direction) * move_speed;
     } 
-    else if (keycode == 1)  // Down (S key) 115
+    else if (keycode == 115)  // Down (S key) 115
     {
         new_x -= cos(vars->direction) * move_speed;
         new_y -= sin(vars->direction) * move_speed;
     } 
-    else if (keycode == 123)  // Left (A key) 97
+    else if (keycode == 65361)  // Left (A key) 97
         vars->direction -= rotation_speed;
-    else if (keycode == 124)  // Right (D key) 100 on linux
+    else if (keycode == 65363)  // Right (D key) 100 on linux
         vars->direction += rotation_speed;
     if (wall_check(new_x, new_y, vars))
     {
