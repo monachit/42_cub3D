@@ -32,6 +32,16 @@ void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+int my_mlx_pixel_get(t_textures *txt, int x, int y)
+{
+	int color;
+
+    if ((y >= txt->height * 100) || (x  >= txt->width * 100))
+        return (0);
+	color = *(int *)(txt->addr + (y * txt->line_length + x * (txt->bit_per_pixel / 8)));
+    return (color);
+}
+
 void clear_image(t_vars *vars, int color) {
     for (int y = 0; y < vars->win_height * 100; y++) {
         for (int x = 0; x < vars->win_width * 100; x++) {
@@ -187,11 +197,24 @@ double get_v_inter(t_vars *vars, double angl)
     return sqrt(pow(v_x - vars->p_x, 2) + pow(v_y - vars->p_y, 2));
 }
 
+
+int get_x(t_vars *vars, double ray)
+{
+    if (vars->flg_achmn_hayt == 0) // horizontal
+        return fmod((vars->p_x + cos(ray) * vars->distence), TILE_SIZE);
+    else // vertical
+        return fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE);
+}
+
+
 void rander_wall(t_vars *vars, int ray, double ray_a)
 {
     double wall_h;
     double bottom_p;
     double top_p;
+    int color;
+    int x;
+    int y;
 
     vars->distence *= cos(ray_a - vars->direction);
  
@@ -203,8 +226,15 @@ void rander_wall(t_vars *vars, int ray, double ray_a)
         top_p = 0;
     if (bottom_p > vars->win_height * 100)
         bottom_p = vars->win_height * 100;
+    x = get_x(vars, ray_a);
+    int tmp_y = top_p;
     while (top_p <= bottom_p)
-        my_mlx_pixel_put(vars, ray, (int)top_p++, 0xFFFFFF);
+    {
+        y = (top_p - tmp_y) * TILE_SIZE / wall_h;
+        color = my_mlx_pixel_get(vars->textures.north, x, y);
+        my_mlx_pixel_put(vars, ray, (int)top_p, color);
+        (int)top_p++;
+    }
 }
 
 void cast_rays(t_vars *vars)
@@ -225,9 +255,15 @@ void cast_rays(t_vars *vars)
         x_inter = get_v_inter(vars, nor_angle(first_ray)); // vertical
         h_inter = get_h_inter(vars, nor_angle(first_ray)); // horizontal 
         if (x_inter < h_inter)
+        {
+            vars->flg_achmn_hayt = 1;
             vars->distence = x_inter;
+        }
         else
+        {
+            vars->flg_achmn_hayt = 0;
             vars->distence = h_inter;
+        }
         // printf("%f \n",vars->distence);
         // draw_line(vars, vars->p_x, vars->p_y, vars->p_x + cos(first_ray) * vars->distence, vars->p_y + sin(first_ray) * vars->distence, 5646546);
         rander_wall(vars, ray, first_ray);
@@ -315,6 +351,26 @@ int	close_window(void *v)
 	return (0);
 }
 
+t_textures  *texture_loader(t_vars *vars, char *path)
+{
+    t_textures *txt = malloc(sizeof(t_textures));
+    
+    txt->img = mlx_xpm_file_to_image(vars->mlx, path, &txt->width, &txt->height);
+
+    txt->addr = mlx_get_data_addr(txt->img, &txt->bit_per_pixel, &txt->line_length, &txt->endian);
+
+    return (txt);
+}
+
+void    init_tssawer_amaalem(t_data *data, t_vars *vars)
+{
+    vars->textures.north = texture_loader(vars, data->north_path);
+    vars->textures.south = texture_loader(vars, data->north_path);
+    vars->textures.east = texture_loader(vars, data->north_path);
+    vars->textures.west = texture_loader(vars, data->north_path);
+
+}
+
 void    game_plan(t_data *data)
 {
     t_vars vars;
@@ -328,6 +384,7 @@ void    game_plan(t_data *data)
     //     NULL
     // };
 
+
     vars.map1 = data->map;
     vars.mlx = mlx_init();
     vars.win_width = ft_strlen(data->map[0]);
@@ -340,6 +397,11 @@ void    game_plan(t_data *data)
         ft_show_error("mlx_new_window function fails");
     vars.img = mlx_new_image(vars.mlx, vars.win_width * 100, vars.win_height * 100);
     vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel, &vars.line_length, &vars.endian);
+
+
+    init_tssawer_amaalem(data, &vars);
+
+
     for (int j = 0; j < vars.win_height; j++)
     {
         for (int i = 0; i < vars.win_width; i++)

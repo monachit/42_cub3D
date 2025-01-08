@@ -64,7 +64,25 @@ typedef	struct t_data
 	char		**map;
 }	t_data;
 
+typedef struct t_textures
+{
+	void 		*img;
+	char 		*addr;
+	int 		height;
+	int 		width;
+	int			bit_per_pixel;
+	int			line_length;
+	int			endian;
 
+}				t_textures;
+
+typedef struct t_tata
+{
+	t_textures	*north;
+	t_textures	*south;
+	t_textures	*west;
+	t_textures	*east;
+}				t_tata;
 
 typedef struct s_vars
 {
@@ -88,7 +106,9 @@ typedef struct s_vars
     int     win_height;
     int     c;
     int     p;
-  double direction;
+	double direction;
+	int	flg_achmn_hayt;
+	t_tata	textures;
 } t_vars;
 
 
