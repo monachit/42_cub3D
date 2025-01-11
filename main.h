@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/11/08 16:28:27 by younesounaj      ###   ########.fr       */
+/*   Updated: 2025/01/09 23:28:37 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 #define PI 3.141592653589793
 #define length_ray  10
 #define FOV  60 * (PI / 180)
-// #define S_W 900
-// #define S_H 900
+#define S_W 900
+#define S_H 800
 #define TILE_SIZE 100
 
 typedef enum t_type{
@@ -107,7 +107,7 @@ typedef struct s_vars
     int     c;
     int     p;
 	double direction;
-	int	flg_achmn_hayt;
+	int		flg_achmn_hayt;
 	t_tata	textures;
 } t_vars;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2024/11/29 06:51:00 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/11 04:57:22 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ int ft_new(char **map)
     return (i - 6);
 }
 
-void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
-{
-	char	*dst;
-
-    if ((y >= data->win_height * 100) || (x  >= data->win_width * 100))
-        return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
 int my_mlx_pixel_get(t_textures *txt, int x, int y)
 {
 	int color;
@@ -42,51 +32,25 @@ int my_mlx_pixel_get(t_textures *txt, int x, int y)
     return (color);
 }
 
-void clear_image(t_vars *vars, int color) {
-    for (int y = 0; y < vars->win_height * 100; y++) {
-        for (int x = 0; x < vars->win_width * 100; x++) {
+void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
+{
+	char	*dst;
+
+    if ((y >= S_H) || (x  >= S_W))
+        return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void clear_image(t_vars *vars, int color){
+    for (int y = 0; y <  S_H; y++) {
+        for (int x = 0; x <  S_W; x++) {
             my_mlx_pixel_put(vars, x, y, color);
         }
     }
 }
 
 
-void	draw_square(t_vars *vars, int x, int y, int size, int color)
-{
-	for (int i = 0; i < size; i++) 
-	{
-		for (int j = 0; j < size; j++)
-		{
-			my_mlx_pixel_put(vars, x + j, y + i, color);
-		}
-	}
-}
-
-void draw_line(t_vars *vars, double start_x, double start_y, double end_x, double end_y, int color) {
-
-    int dx = abs((int)end_x - (int)start_x);
-    int dy = abs((int)end_y - (int)start_y);
-
-    int sx = (start_x < end_x) ? 1 : -1;
-    int sy = (start_y < end_y) ? 1 : -1;
-    int err = dx - dy;
-
-    while (1) 
-    {
-        if (start_x >= 0 && start_x < 900 && start_y >= 0 && start_y < 900)
-        {
-            if (vars->map1[(int)(start_y / 100)][(int)(start_x / 100)] != '1')
-                my_mlx_pixel_put(vars, (int)start_x, (int)start_y, color);
-            else
-                break;
-        }
-        if ((int)start_x == (int)end_x && (int)start_y == (int)end_y)
-            break;
-        int err2 = err * 2;
-        if (err2 > -dy) { err -= dy; start_x += sx; }
-        if (err2 < dx) { err += dx; start_y += sy; }
-    }
-}
 
 int	is_ray_facing_down(double rayAngle)
 {
@@ -115,21 +79,6 @@ double nor_angle(double angle)
 	if (angle > (2 * M_PI))
 		angle -= (2 * M_PI);
 	return (angle);
-}
-
-int     until_circle(double angl, char c)
-{
-    if (c == 'x')
-    {
-        if (angl > 0 && angl < PI)
-            return 1;
-    }
-    else if (c == 'y')
-    {
-        if (angl > PI / 2 && angl < PI * 3 / 2)
-            return 1;
-    }
-    return (0);
 }
 
 int    wall_check(double x, double y, t_vars *vars)
@@ -185,7 +134,7 @@ double get_v_inter(t_vars *vars, double angl)
 			&& y_step < 0))
 		y_step *= -1;
 	if (is_ray_facing_left(angl))
-		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE - 0.001;
+		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE - 0.001 ;
 	else
 		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
     v_y = vars->p_y + (v_x - vars->p_x) * tan(angl);
@@ -197,7 +146,6 @@ double get_v_inter(t_vars *vars, double angl)
     return sqrt(pow(v_x - vars->p_x, 2) + pow(v_y - vars->p_y, 2));
 }
 
-
 int get_x(t_vars *vars, double ray)
 {
     if (vars->flg_achmn_hayt == 0) // horizontal
@@ -206,32 +154,35 @@ int get_x(t_vars *vars, double ray)
         return fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE);
 }
 
-
 void rander_wall(t_vars *vars, int ray, double ray_a)
 {
     double wall_h;
     double bottom_p;
     double top_p;
-    int color;
-    int x;
-    int y;
 
     vars->distence *= cos(ray_a - vars->direction);
  
-    wall_h = (TILE_SIZE / vars->distence) * (vars->win_width * TILE_SIZE / 2) / tan(FOV / 2);
-    top_p = (vars->win_height * 100 / 2) - (wall_h /2);
-    bottom_p = (vars->win_height * 100 / 2) + (wall_h /2);
+    wall_h = (TILE_SIZE / vars->distence) * (S_H / 100 * TILE_SIZE / 2) / tan(FOV / 2);
+    top_p = (S_H/ 2) - (wall_h /2);
+    bottom_p = (S_H / 2) + (wall_h /2);
 
     if (top_p < 0)
         top_p = 0;
-    if (bottom_p > vars->win_height * 100)
-        bottom_p = vars->win_height * 100;
-    x = get_x(vars, ray_a);
+    if (bottom_p > S_H)
+        bottom_p =  S_H;
+    int t = top_p;
+    int b = bottom_p;
+    int x = get_x(vars, ray_a);
+    int y;
     int tmp_y = top_p;
+    while (t > 0)
+        my_mlx_pixel_put(vars, ray, (int)t--, 0xF542C2);
+    while (b <  S_H)
+        my_mlx_pixel_put(vars, ray, (int)b++, 0x4290F5);
     while (top_p <= bottom_p)
     {
         y = (top_p - tmp_y) * TILE_SIZE / wall_h;
-        color = my_mlx_pixel_get(vars->textures.north, x, y);
+        int color = my_mlx_pixel_get(vars->textures.north, x, y);
         my_mlx_pixel_put(vars, ray, (int)top_p, color);
         (int)top_p++;
     }
@@ -244,13 +195,10 @@ void cast_rays(t_vars *vars)
     double h_inter;
     double  add_angl;
 
-    add_angl = (FOV / (vars->win_width* 100));
+    add_angl = (FOV / (S_W));
     int ray = 0;
-
-    printf("%d\n", vars->win_width* 100);
-    
     first_ray = vars->direction - (FOV / 2);
-    while (ray < vars->win_width * 100)
+    while (ray <  S_W)
     {
         x_inter = get_v_inter(vars, nor_angle(first_ray)); // vertical
         h_inter = get_h_inter(vars, nor_angle(first_ray)); // horizontal 
@@ -264,8 +212,6 @@ void cast_rays(t_vars *vars)
             vars->flg_achmn_hayt = 0;
             vars->distence = h_inter;
         }
-        // printf("%f \n",vars->distence);
-        // draw_line(vars, vars->p_x, vars->p_y, vars->p_x + cos(first_ray) * vars->distence, vars->p_y + sin(first_ray) * vars->distence, 5646546);
         rander_wall(vars, ray, first_ray);
         first_ray += add_angl;
         ray++;
@@ -275,7 +221,6 @@ void cast_rays(t_vars *vars)
 
 void drawing(t_vars *vars)
 {    
-    clear_image(vars, 0x000000); 
     // draw_square(vars, vars->p_x, vars->p_y, 20, 0xFF6FFF);
     // for (int i = 0; i < vars->win_height; i++) 
     // {
@@ -285,6 +230,7 @@ void drawing(t_vars *vars)
     //             draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF); 
     //     }
     // }
+    clear_image(vars, 0x000000); 
     cast_rays(vars);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }
@@ -297,58 +243,70 @@ int key_hook(int keycode, t_vars *vars)
 
     new_x = vars->p_x;
     new_y = vars->p_y;
-    if (keycode == 119)  // Up (W key) 113
+    if (keycode == 119)
     {
         new_x += cos(vars->direction) * move_speed;
         new_y += sin(vars->direction) * move_speed;
-    } 
-    else if (keycode == 115)  // Down (S key) 115
+    }
+    else if (keycode == 97)
+    {
+        new_x += sin(vars->direction) * move_speed;
+        new_y -= cos(vars->direction) * move_speed;
+    }
+    else if (keycode == 100)
+    {
+        new_x -= sin(vars->direction) * move_speed;
+        new_y += cos(vars->direction) * move_speed;
+    }
+    else if (keycode == 115)
     {
         new_x -= cos(vars->direction) * move_speed;
         new_y -= sin(vars->direction) * move_speed;
-    } 
-    else if (keycode == 65361)  // Left (A key) 97
+    }
+    else if (keycode == 65361)
         vars->direction -= rotation_speed;
-    else if (keycode == 65363)  // Right (D key) 100 on linux
+    else if (keycode == 65363)
         vars->direction += rotation_speed;
     if (wall_check(new_x, new_y, vars))
     {
         vars->p_x = new_x;
         vars->p_y = new_y;
     }
-    // draw_square(vars, vars->p_x, vars->p_y, 20, 0x000000);
     vars->direction = nor_angle(vars->direction);
     drawing(vars);
     return 0;
 }
 
-void    set_pos(char **map, int *a, int *b)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            if (map[i][j] == 'N')
-            {
-                *a = j;
-                *b = i;
-                return ;
-            }
-            j++;
-        }
-        i++;
-    }
-}
 int	close_window(void *v)
 {
     (void)v;
 	exit(EXIT_SUCCESS);
 	return (0);
+}
+
+void handl_direction(t_data *data , double *s)
+{
+    int i = 0;
+    int j =0;
+    while (data->map[i])
+    {
+        j = 0;
+        while (data->map[i][j])
+        {
+            if (data->map[i][j] == 'N')
+                *s = PI/2;
+            else if (data->map[i][j] == 'E')
+                *s = 0;
+            else if (data->map[i][j] == 'W')
+                *s = PI;
+            else if (data->map[i][j] == 'S')
+                *s = 3* PI/ 2;
+            if (*s != -1)
+                return ;
+            j++;
+        }
+        i++;
+    }
 }
 
 t_textures  *texture_loader(t_vars *vars, char *path)
@@ -375,38 +333,28 @@ void    game_plan(t_data *data)
 {
     t_vars vars;
 
-    // char *map[] = {
-    //     "1111",
-    //     "1001",
-    //     "1001",
-    //     "10N1",
-    //     "1111",
-    //     NULL
-    // };
-
-
     vars.map1 = data->map;
     vars.mlx = mlx_init();
     vars.win_width = ft_strlen(data->map[0]);
     vars.win_height = 0;
-    vars.direction = 0;
+    vars.direction = -1;
+    
+    handl_direction(data, &vars.direction);
     while (data->map[vars.win_height])
         vars.win_height++;
-    vars.win = mlx_new_window(vars.mlx, vars.win_width * 100, vars.win_height * 100, "YWAAA");
+    vars.win = mlx_new_window(vars.mlx, S_W, S_H , "YWAAA");
     if (!vars.win)
         ft_show_error("mlx_new_window function fails");
-    vars.img = mlx_new_image(vars.mlx, vars.win_width * 100, vars.win_height * 100);
+    vars.img = mlx_new_image(vars.mlx, S_W,S_H);
     vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel, &vars.line_length, &vars.endian);
 
-
     init_tssawer_amaalem(data, &vars);
-
 
     for (int j = 0; j < vars.win_height; j++)
     {
         for (int i = 0; i < vars.win_width; i++)
         {
-            if (data->map[j][i] == 'N')
+            if (data->map[j][i] != '1' && data->map[j][i] == '0')
             {
                 vars.p_x = i * 100;
                 vars.p_y = j * 100;
@@ -415,10 +363,8 @@ void    game_plan(t_data *data)
                 
         }
     }
-    // printf("%d\n", vars.win_height* 100);
     mlx_hook(vars.win, 2, 1L<<0, key_hook, &vars);
     mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
-    
 	mlx_hook(vars.win, 17, 0L, close_window, NULL);
     mlx_loop(vars.mlx);
 
