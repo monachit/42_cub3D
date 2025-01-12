@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/11 04:57:22 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/12 21:17:05 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,38 @@ void clear_image(t_vars *vars, int color){
 
 
 
-int	is_ray_facing_down(double rayAngle)
+int is_ray_facing_down(double rayAngle)
 {
-	return (rayAngle > 0 && rayAngle < M_PI);
+    double sinValue = sin(rayAngle);
+    if (sinValue > 0)
+        return 1;
+    return 0;
 }
 
-int	is_ray_facing_up(double rayAngle)
+int is_ray_facing_up(double rayAngle)
 {
-	return (!is_ray_facing_down(rayAngle));
+    double sinValue = sin(rayAngle);
+    if (sinValue < 0)
+        return 1;
+    return 0;
 }
 
-int	is_ray_facing_right(double rayAngle)
+int is_ray_facing_right(double rayAngle)
 {
-	return (rayAngle < 0.5 * M_PI || rayAngle > 1.5 * M_PI);
+    double cosValue = cos(rayAngle);
+    if (cosValue > 0)
+        return 1;
+    return 0;
 }
 
-int	is_ray_facing_left(double rayAngle)
+int is_ray_facing_left(double rayAngle)
 {
-	return (!is_ray_facing_right(rayAngle));
+    double cosValue = cos(rayAngle);
+    if (cosValue < 0)
+        return 1;
+    return 0;
 }
+
 
 double nor_angle(double angle)
 {
@@ -110,7 +123,8 @@ double get_h_inter(t_vars *vars, double angl)
     if (is_ray_facing_down(angl))
         h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
     else 
-        h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE - 0.001;
+        h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE - 0.001; //  the computer might think the line is inside the next square, so it tries to draw more lines where it shouldn’t.
+    printf("%f\n ", h_y);
     h_x = vars->p_x + (h_y - vars->p_y) / tan(angl);
     while (wall_check(h_x, h_y, vars))
     {
@@ -134,7 +148,7 @@ double get_v_inter(t_vars *vars, double angl)
 			&& y_step < 0))
 		y_step *= -1;
 	if (is_ray_facing_left(angl))
-		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE - 0.001 ;
+		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE - 0.001;
 	else
 		v_x = floor(vars->p_x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
     v_y = vars->p_y + (v_x - vars->p_x) * tan(angl);
@@ -148,9 +162,9 @@ double get_v_inter(t_vars *vars, double angl)
 
 int get_x(t_vars *vars, double ray)
 {
-    if (vars->flg_achmn_hayt == 0) // horizontal
+    if (vars->flg_achmn_hayt == 0)
         return fmod((vars->p_x + cos(ray) * vars->distence), TILE_SIZE);
-    else // vertical
+    else
         return fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE);
 }
 
@@ -234,6 +248,12 @@ void drawing(t_vars *vars)
     cast_rays(vars);
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }
+int	close_window(void *v)
+{
+    (void)v;
+	exit(EXIT_SUCCESS);
+	return (0);
+}
 
 int key_hook(int keycode, t_vars *vars)
 {
@@ -267,6 +287,8 @@ int key_hook(int keycode, t_vars *vars)
         vars->direction -= rotation_speed;
     else if (keycode == 65363)
         vars->direction += rotation_speed;
+    else if (keycode == 53)
+        close_window(NULL);        
     if (wall_check(new_x, new_y, vars))
     {
         vars->p_x = new_x;
@@ -277,12 +299,6 @@ int key_hook(int keycode, t_vars *vars)
     return 0;
 }
 
-int	close_window(void *v)
-{
-    (void)v;
-	exit(EXIT_SUCCESS);
-	return (0);
-}
 
 void handl_direction(t_data *data , double *s)
 {
