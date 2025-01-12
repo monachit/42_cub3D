@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/12 16:31:43 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 00:05:42 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ typedef struct s_vars
     int     endian;
 	double	distence;
     double     p_x;
+	double		norm_1;
+	double		norm2;
     double     p_y;
     int     win_width;
     int     win_height;
@@ -152,7 +154,27 @@ void    extract_paths(t_read *file, t_data *data);
 // extract map
 char    **extract_map(t_read *file, t_data *data, int len);
 
-
-
+t_textures  *chose_image(t_vars *vars, double ray_a);
+int get_x(t_vars *vars, double ray);
+int my_mlx_pixel_get(t_textures *txt, int x, int y);
+t_textures  *texture_loader(t_vars *vars, char *path);
+void    init_tssawer_amaalem(t_data *data, t_vars *vars);
+int rayfacing_down(double rayAngle);
+int rayfacing_up(double rayAngle);
+int rayfacing_right(double rayAngle);
+int rayfacing_left(double rayAngle);
+double nor_angle(double angle);
+double get_h_inter(t_vars *vars, double angl);
+double get_v_inter(t_vars *vars, double angl);
+void rander_wall2(int top_p, int bottom_p, t_vars *vars, double ray_a);
+void rander_wall(t_vars *vars, int ray, double ray_a);
+void cast_rays2(t_vars *vars, double x, double y);
+void cast_rays(t_vars *vars);
+int    wall_check(double x, double y, t_vars *vars);
+int	close_window(void *v);
+int key_hook(int keycode, t_vars *vars);
+void	my_mlx_pixel_put(t_vars *data, int x, int y, int color);
+void	clear_image(t_vars *vars, int color);
+void	drawing(t_vars *vars);
 
 #endif
