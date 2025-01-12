@@ -162,10 +162,22 @@ double get_v_inter(t_vars *vars, double angl)
 
 int get_x(t_vars *vars, double ray)
 {
-    if (vars->flg_achmn_hayt == 0)
+    if (vars->flg_achmn_hayt == 0)// h
         return fmod((vars->p_x + cos(ray) * vars->distence), TILE_SIZE);
-    else
+    else // v
         return fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE);
+}
+
+t_textures  *chose_image(t_vars *vars, double ray_a)
+{
+    if (is_ray_facing_up(ray_a) && vars->flg_achmn_hayt == 0) // up
+        return (vars->textures.north);
+    else if (is_ray_facing_down(ray_a) && vars->flg_achmn_hayt == 0) // down
+        return (vars->textures.south);
+    else if (is_ray_facing_left(ray_a) && vars->flg_achmn_hayt == 1) // west
+        return (vars->textures.west);
+    else if (is_ray_facing_right(ray_a) && vars->flg_achmn_hayt == 1)
+        return (vars->textures.east);
 }
 
 void rander_wall(t_vars *vars, int ray, double ray_a)
@@ -196,7 +208,8 @@ void rander_wall(t_vars *vars, int ray, double ray_a)
     while (top_p <= bottom_p)
     {
         y = (top_p - tmp_y) * TILE_SIZE / wall_h;
-        int color = my_mlx_pixel_get(vars->textures.north, x, y);
+        t_textures* tmp = chose_image(vars, ray_a);
+        int color = my_mlx_pixel_get(tmp, x, y);
         my_mlx_pixel_put(vars, ray, (int)top_p, color);
         (int)top_p++;
     }
@@ -339,9 +352,9 @@ t_textures  *texture_loader(t_vars *vars, char *path)
 void    init_tssawer_amaalem(t_data *data, t_vars *vars)
 {
     vars->textures.north = texture_loader(vars, data->north_path);
-    vars->textures.south = texture_loader(vars, data->north_path);
-    vars->textures.east = texture_loader(vars, data->north_path);
-    vars->textures.west = texture_loader(vars, data->north_path);
+    vars->textures.south = texture_loader(vars, data->south_path);
+    vars->textures.east = texture_loader(vars, data->east_path);
+    vars->textures.west = texture_loader(vars, data->west_path);
 
 }
 
