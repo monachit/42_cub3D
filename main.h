@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/13 20:10:58 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 21:26:28 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #define PI 3.141592653589793
 #define length_ray  10
 #define FOV  60 * (PI / 180)
-#define S_W 900
-#define S_H 800
+#define S_W 1000
+#define S_H 1000
 #define TILE_SIZE 100
 
 typedef enum t_type{

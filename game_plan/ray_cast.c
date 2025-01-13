@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:41:44 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/13 00:04:19 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 22:08:09 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,9 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 	bottom_p = (S_H / 2) + (wall_h / 2);
 	tmp_y = top_p;
 	b = bottom_p;
-	if (top_p < 0)
-		top_p = 0;
-	if (bottom_p > S_H)
-		bottom_p = S_H;
+			my_mlx_pixel_put(vars, ray, (int)tmp_y--, 0xF542C2);
 	while (tmp_y > 0)
-		my_mlx_pixel_put(vars, ray, (int)tmp_y--, 0xF542C2);
+		my_mlx_pixel_put(vars, ray, (int)tmp_y--, 0xFFFFFF);
 	while (b < S_H)
 		my_mlx_pixel_put(vars, ray, (int)b++, 0x4290F5);
 	rander_wall2((int)top_p, (int)bottom_p, vars, ray_a);

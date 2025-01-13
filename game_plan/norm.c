@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:34:51 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/13 20:19:17 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 22:04:49 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,20 @@ int	key_hook(int keycode, t_vars *vars)
 	return (0);
 }
 
-void	clear_image(t_vars *vars, int color)
-{
-	int	y;
-	int	x;
+// void	clear_image(t_vars *vars, int color)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = 0;
-	while (y < S_H)
-	{
-		x = 0;
-		while (x < S_W)
-		{
-			my_mlx_pixel_put(vars, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
+// 	y = 0;
+// 	while (y < S_W)
+// 	{
+// 		x = 0;
+// 		while (x < S_H)
+// 		{
+// 			my_mlx_pixel_put(vars, x, y, color);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
