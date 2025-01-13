@@ -31,7 +31,7 @@ int check_virguls(char *s)
         return (-1);
     while (s[i])
     {
-        if (i + 1 < ft_strlen(s) && s[i] == ',' && s[i + 1] == ',')
+        if (i + 1 < (int)ft_strlen(s) && s[i] == ',' && s[i + 1] == ',')
             return (-1);
         if (s[i] == ',')
             count++;
@@ -60,22 +60,24 @@ int len_nb(char *s, int *i)
 void    extract_numbers(t_data *data, char *s, char c)
 {
     int i = 0;
+    char *tmp = ft_substr(s, i, len_nb(s, &i));
     if (c == 'c')
     {
-        data->c1 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->c1 = ft_atoi_lhbal(tmp);
         i++;
-        data->c2 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->c2 = ft_atoi_lhbal(tmp);
         i++;
-        data->c3 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->c3 = ft_atoi_lhbal(tmp);
     }
     else if (c == 'f')
     {
-        data->f1 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->f1 = ft_atoi_lhbal(tmp);
         i++;
-        data->f2 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->f2 = ft_atoi_lhbal(tmp);
         i++;
-        data->f3 = ft_atoi_lhbal( ft_substr(s, i, len_nb(s, &i)));
+        data->f3 = ft_atoi_lhbal(tmp);
     }
+    free(tmp);
 }
 
 void    process_colors(t_data *data,char *str, char c)
@@ -90,6 +92,7 @@ void    process_colors(t_data *data,char *str, char c)
         ft_show_error("Colors invalid!\n");
     }
     extract_numbers(data, s, c);
+    free(s);
 }
 
 void    extract_colors(t_read *file, t_data *data)

@@ -52,7 +52,7 @@ bool    parse_map(char **map)
     return (true);
 }
 
-char    **extract_map(t_read *file, t_data *data, int len)
+char    **extract_map(t_read *file, int len)
 {
     char **strs = (char **)malloc(sizeof(char *) * (len + 1));
     if (!strs)
@@ -64,8 +64,10 @@ char    **extract_map(t_read *file, t_data *data, int len)
         {
             while (file && file->type == MAP)
             {
-                strs[i] = ft_strdup(ft_substr(file->line, 0, ft_strlen_lhbal(file->line)));
+                char *tmp = ft_substr(file->line, 0, ft_strlen_lhbal(file->line));
+                strs[i] = ft_strdup(tmp);
                 file = file->next;
+                free(tmp);
                 i++;
             }
             strs[i] = NULL;

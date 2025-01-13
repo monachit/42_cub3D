@@ -67,21 +67,24 @@ bool    check_empty_line(char *str)
 void    process_line(t_read *line_file)
 {
     int i = 0;
+    char *tmp = NULL;
     if (calcul_words(line_file->line) == 2)
     {
         i = skip_spaces(line_file->line, 0);
-        if (!ft_strcmp("F", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        tmp = ft_substr(line_file->line, i, extract_len(line_file->line, i));
+        if (!ft_strcmp("F", tmp))
             line_file->type = F;
-        else if (!ft_strcmp("C", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        else if (!ft_strcmp("C", tmp))
             line_file->type = C;
-        else if (!ft_strcmp("NO", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        else if (!ft_strcmp("NO", tmp))
             line_file->type = NO;
-        else if (!ft_strcmp("SO", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        else if (!ft_strcmp("SO", tmp))
             line_file->type = SO;
-        else if (!ft_strcmp("WE", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        else if (!ft_strcmp("WE", tmp))
             line_file->type = WE;
-        else if (!ft_strcmp("EA", ft_substr(line_file->line, i, extract_len(line_file->line, i))))
+        else if (!ft_strcmp("EA", tmp))
             line_file->type = EA;
+        free(tmp);
     }
     if (check_empty_line(line_file->line))
         line_file->type = EMPTY;

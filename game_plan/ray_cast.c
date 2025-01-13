@@ -27,9 +27,9 @@ void	rander_wall2(int top_p, int bottom_p, t_vars *vars, double ray_a)
 	{
 		y = (top_p - tmp_y) * TILE_SIZE / wall_h;
 		tmp = chose_image(vars, ray_a);
-		my_mlx_pixel_put(vars, vars->norm2, (int)top_p, my_mlx_pixel_get(tmp, x,
+		my_mlx_pixel_put(vars, vars->norm2, top_p, my_mlx_pixel_get(tmp, x,
 				y));
-		(int)top_p++;
+		top_p++;
 	}
 }
 

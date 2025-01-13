@@ -12,6 +12,17 @@
 
 #include "main.h"
 
+void    free_data(t_data *data)
+{
+    free(data->east_path);
+    free(data->west_path);
+    free(data->north_path);
+    free(data->south_path);
+    int i = 0;
+    while (data->map[i])
+        free(data->map[i++]);
+    free(data->map);
+}
 
 int main(int ac, char **av)
 {
@@ -20,6 +31,9 @@ int main(int ac, char **av)
     data = parse(ac, av);
 
 
+    // exit (1);
     game_plan(&data);
+    
+    free_data(&data);
     return (0);
 }

@@ -54,3 +54,21 @@ int check_name(char *name)
     }
     return (1);
 }
+
+void	free_read(t_read **list)
+{
+	t_read	*curr;
+	t_read	*aux;
+
+	if (!(*list))
+		return ;
+	curr = *list;
+	while (curr != NULL)
+	{
+		aux = curr->next;
+		free(curr->line);
+		free(curr);
+		curr = aux;
+	}
+	*list = NULL;
+}

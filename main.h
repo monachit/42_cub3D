@@ -86,6 +86,7 @@ typedef struct t_tata
 
 typedef struct s_vars
 {
+	t_data	*data;
     char    **map1;
     int     player_x;
     int     player_y;
@@ -133,6 +134,8 @@ t_read  *read_file(char *av);
 int 	ft_strcmp(const char *s1, const char *s2);
 int		ft_atoi_lhbal(char *str);
 void    ft_show_error(char *str);
+void	free_read(t_read **list);
+
 
 // read file
 void    insert_t_read(t_read **file, char *str);
@@ -152,7 +155,7 @@ void    extract_colors(t_read *file, t_data *data);
 void    extract_paths(t_read *file, t_data *data);
 
 // extract map
-char    **extract_map(t_read *file, t_data *data, int len);
+char    **extract_map(t_read *file, int len);
 
 t_textures  *chose_image(t_vars *vars, double ray_a);
 int get_x(t_vars *vars, double ray);
@@ -176,5 +179,7 @@ int key_hook(int keycode, t_vars *vars);
 void	my_mlx_pixel_put(t_vars *data, int x, int y, int color);
 void	clear_image(t_vars *vars, int color);
 void	drawing(t_vars *vars);
+void    free_data(t_data *data);
+
 
 #endif

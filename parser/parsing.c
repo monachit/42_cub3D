@@ -45,9 +45,11 @@ t_data  parse(int ac, char **av)
     init_data(&data);
     extract_colors(file, &data);
     extract_paths(file, &data);
-    data.map = extract_map(file, &data, calcul_token(file, MAP));
-    //HNAYA FREEYI READ YA ZWIWN DIAL MAMAH
+    data.map = extract_map(file, calcul_token(file, MAP));
+    // HNAYA FREEYI READ YA ZWIWN DIAL MAMAH
+    free_read(&file);
 
+    
 
     return (data);
 }
