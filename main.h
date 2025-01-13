@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/13 00:05:42 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 20:10:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include "mlx/mlx.h"
+# include <mlx.h>
 # include "get_next_line/get_next_line.h"
 # include <math.h>
 

@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:34:51 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/12 23:58:20 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 20:19:17 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 int	close_window(void *v)
 {
-	(void)v;
+	t_vars *vars;
+
+	vars = v;
+	mlx_destroy_window(vars->mlx, vars->win);
+	free(vars->mlx);
+	free(vars->data);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

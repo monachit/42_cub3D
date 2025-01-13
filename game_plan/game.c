@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/12 23:55:04 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/13 20:18:23 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	game_plan(t_data *data)
 	t_vars	vars;
 
 	vars.map1 = data->map;
+	vars.data = data;
 	vars.mlx = mlx_init();
 	vars.win_width = ft_strlen(data->map[0]);
 	vars.win_height = 0;
@@ -101,6 +102,6 @@ void	game_plan(t_data *data)
 	player_p(&vars, data);
 	mlx_hook(vars.win, 2, 1L << 0, key_hook, &vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
-	mlx_hook(vars.win, 17, 0L, close_window, NULL);
+	mlx_hook(vars.win, 17, 0L, close_window, &vars);
 	mlx_loop(vars.mlx);
 }
