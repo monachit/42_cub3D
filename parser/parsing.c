@@ -39,17 +39,19 @@ t_data  parse(int ac, char **av)
     token_data(&file);
     if (!check_order(file))
     {
-        // HNAYA FREEYI READ FILE YA ZAAML
+        free_read(&file);
         ft_show_error("File syntax invalid\n");
     }
     init_data(&data);
     extract_colors(file, &data);
     extract_paths(file, &data);
     data.map = extract_map(file, calcul_token(file, MAP));
-    // HNAYA FREEYI READ YA ZWIWN DIAL MAMAH
+    if (!data.map)
+    {
+        free_data(&data);
+        free_read(&file);
+        ft_show_error("Map not valid");
+    }
     free_read(&file);
-
-    
-
     return (data);
 }

@@ -28,7 +28,6 @@ void    process_paths(t_data *data, char *str, t_type type)
     (void)data;
     int i = skip_beg_path(str);
     int j = len_str_path(str, i);
-    // char *s = ft_substr(str, i, j);
     if (type == NO)
         data->north_path = ft_substr(str, i, j);
     else if (type == SO)
@@ -37,7 +36,6 @@ void    process_paths(t_data *data, char *str, t_type type)
         data->west_path = ft_substr(str, i, j);
     else if (type == EA)
         data->east_path = ft_substr(str, i, j);
-    // printf("%s\n", s);
 }
 
 void    extract_paths(t_read *file, t_data *data)
@@ -56,9 +54,4 @@ void    extract_paths(t_read *file, t_data *data)
         file = file->next;
     }
 
-    // check if paths valid and if not free and leavs    
-    // if () 
-
-    // }
-    
 }

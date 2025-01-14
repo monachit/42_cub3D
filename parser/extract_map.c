@@ -77,8 +77,11 @@ char    **extract_map(t_read *file, int len)
     }
     if (!check_player(strs) || !parse_map(strs))
     {
-        //free lmap + read
-        ft_show_error("Map not valid");
+        i = 0;
+        while (strs[i])
+            free(strs[i++]);
+        free(strs);
+        return (NULL);
     }
     return (strs);    
 }

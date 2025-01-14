@@ -60,24 +60,35 @@ int len_nb(char *s, int *i)
 void    extract_numbers(t_data *data, char *s, char c)
 {
     int i = 0;
-    char *tmp = ft_substr(s, i, len_nb(s, &i));
+    char *tmp;
     if (c == 'c')
     {
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->c1 = ft_atoi_lhbal(tmp);
         i++;
+        free(tmp);
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->c2 = ft_atoi_lhbal(tmp);
+        free(tmp);
         i++;
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->c3 = ft_atoi_lhbal(tmp);
+        free(tmp);
     }
     else if (c == 'f')
     {
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->f1 = ft_atoi_lhbal(tmp);
         i++;
+        free(tmp);
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->f2 = ft_atoi_lhbal(tmp);
         i++;
+        free(tmp);
+        tmp = ft_substr(s, i, len_nb(s, &i));
         data->f3 = ft_atoi_lhbal(tmp);
+        free(tmp);
     }
-    free(tmp);
 }
 
 void    process_colors(t_data *data,char *str, char c)
@@ -97,14 +108,14 @@ void    process_colors(t_data *data,char *str, char c)
 
 void    extract_colors(t_read *file, t_data *data)
 {
-
-    while (file)
+    t_read *head = file;
+    while (head)
     {
-        if (file->type == F)
-            process_colors(data, file->line, 'f');
-        else if (file->type == C)
-            process_colors(data, file->line, 'c');
-        file = file->next;
+        if (head->type == F)
+            process_colors(data, head->line, 'f');
+        else if (head->type == C)
+            process_colors(data, head->line, 'c');
+        head = head->next;
     }
     if (data->c1 < 0 || data->c1 > 255 
         || data->c2 < 0 || data->c2 > 255 
@@ -113,8 +124,7 @@ void    extract_colors(t_read *file, t_data *data)
         || data->f2 < 0 || data->f2 > 255 
         || data->f3 < 0 || data->f3 > 255)
     {
-        // FREE HNAYA L FILE YA ZWIWN DIAL MAMAH
+        free_read(&file);
         ft_show_error("RGB colors range invalid [0,255]\n");
     }
-    
 }
