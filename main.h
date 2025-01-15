@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/13 21:26:28 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/15 05:50:51 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,11 @@ bool    check_order(t_read *file);
 
 // extract colors
 void    extract_colors(t_read *file, t_data *data);
+int	check_virguls(char *s);
+int	len_nb(char *s, int *i);
+void	norme_c(t_data *data, int i, char *s, char *tmp);
+int	skip_beg(char *str);
+int	len_str_color(char *s, int i);
 
 // extract paths
 void    extract_paths(t_read *file, t_data *data);
