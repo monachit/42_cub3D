@@ -3,39 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: younesounajjar <younesounajjar@student.    +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:47:33 by monachit          #+#    #+#             */
-/*   Updated: 2024/11/08 16:28:46 by younesounaj      ###   ########.fr       */
+/*   Updated: 2025/01/15 22:58:52 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void    free_data(t_data *data)
+void	free_data(t_data *data)
 {
-    free(data->east_path);
-    free(data->west_path);
-    free(data->north_path);
-    free(data->south_path);
-    if (!data->map)
-        return ;
-    int i = 0;
-    while (data->map[i])
-        free(data->map[i++]);
-    free(data->map);
+	int	i;
+
+	free(data->east_path);
+	free(data->west_path);
+	free(data->north_path);
+	free(data->south_path);
+	if (!data->map)
+		return ;
+	i = 0;
+	while (data->map[i])
+		free(data->map[i++]);
+	free(data->map);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    t_data data;
+	t_data	data;
 
-    data = parse(ac, av);
-
-
-    // exit (1);
-    game_plan(&data);
-    free_data(&data);
-    
-    return (0);
+	data = parse(ac, av);
+	game_plan(&data);
+	free_data(&data);
+	return (0);
 }

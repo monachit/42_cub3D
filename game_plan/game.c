@@ -24,11 +24,11 @@ void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
 
 void	draw_square(t_vars *vars, int x, int y, int size, int color)
 {
-	for (int i = 0; i < size; i++)  // Loop through the square's height
+	for (int i = 0; i < size; i++) // Loop through the square's height
 	{
-		for (int j = 0; j < size; j++)  // Loop through the square's width
+		for (int j = 0; j < size; j++) // Loop through the square's width
 		{
-			my_mlx_pixel_put(vars, x + j, y + i, color);  // Plot the pixel
+			my_mlx_pixel_put(vars, x + j, y + i, color); // Plot the pixel
 		}
 	}
 }
@@ -37,14 +37,14 @@ void	drawing(t_vars *vars)
 {
 	// clear_image(vars, 0x000000);
 	// draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
-    // for (int i = 0; i < vars->win_height; i++) 
-    // {
-    //     for (int j = 0; j < vars->win_width; j++) 
-    //     {
-    //         if (vars->map1[i][j] == '1')
-    //             draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF); 
-    //     }
-    // }
+	// for (int i = 0; i < vars->win_height; i++)
+	// {
+	//     for (int j = 0; j < vars->win_width; j++)
+	//     {
+	//         if (vars->map1[i][j] == '1')
+	//             draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF);
+	//     }
+	// }
 	cast_rays(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }
@@ -109,7 +109,6 @@ void	game_plan(t_data *data)
 	vars.win_width = ft_strlen(data->map[0]);
 	vars.win_height = 0;
 	vars.direction = -1;
-	
 	handl_direction(data, &vars.direction);
 	while (data->map[vars.win_height])
 		vars.win_height++;

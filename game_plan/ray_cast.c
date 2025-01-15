@@ -27,15 +27,14 @@ void	rander_wall2(int top_p, int bottom_p, t_vars *vars, double ray_a)
 	{
 		y = (top_p - tmp_y) * TILE_SIZE / wall_h;
 		tmp = chose_image(vars, ray_a);
-		my_mlx_pixel_put(vars, vars->norm2, top_p, my_mlx_pixel_get(tmp, x,
-				y));
+		my_mlx_pixel_put(vars, vars->norm2, top_p, my_mlx_pixel_get(tmp, x, y));
 		top_p++;
 	}
 }
 
-int rgb(int R, int G, int B)
+int	rgb(int R, int G, int B)
 {
-    return ((R << 16) | (G << 8) | B);
+	return ((R << 16) | (G << 8) | B);
 }
 
 void	rander_wall(t_vars *vars, int ray, double ray_a)
@@ -56,7 +55,8 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 	tmp_y = top_p;
 	b = bottom_p;
 	while (tmp_y >= 0)
-		my_mlx_pixel_put(vars, ray, (int)tmp_y--, rgb(vars->data->c1, vars->data->c2, vars->data->c3));
+		my_mlx_pixel_put(vars, ray, (int)tmp_y--, rgb(vars->data->c1,
+				vars->data->c2, vars->data->c3));
 	while (b < S_H)
 		my_mlx_pixel_put(vars, ray, (int)b++, 0x4290F5);
 	rander_wall2((int)top_p, (int)bottom_p, vars, ray_a);

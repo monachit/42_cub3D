@@ -1,19 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/15 22:45:24 by younajja          #+#    #+#             */
+/*   Updated: 2025/01/15 22:45:29 by younajja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../main.h"
 
-void    ft_show_error(char *str)
+void	ft_show_error(char *str)
 {
-    write(2, "Error\n", 6);
-    write(2, str, ft_strlen(str));
-    exit (1);
+	write(2, "Error\n", 6);
+	write(2, str, ft_strlen(str));
+	exit(1);
 }
 
-int ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-    int i = 0;
+	int	i;
 
-    while (s1[i] && s1[i] == s2[i])
-        i++;
-    return (unsigned char)s1[i] - (unsigned char)s2[i];
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
 int	ft_atoi_lhbal(char *str)
@@ -36,23 +49,24 @@ int	ft_atoi_lhbal(char *str)
 	return (res);
 }
 
-int check_name(char *name)
+int	check_name(char *name)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (name[i])
-    {
-        if (name[i] == '.')
-        {
-            if (name[i + 1] == 'c' && name[i + 2] == 'u' && name[i + 3] == 'b' && name[i + 4] == '\0')
-                return (0);
-            else
-                return (1);
-        }
-        i++;
-    }
-    return (1);
+	i = 0;
+	while (name[i])
+	{
+		if (name[i] == '.')
+		{
+			if (name[i + 1] == 'c' && name[i + 2] == 'u' && name[i + 3] == 'b'
+				&& name[i + 4] == '\0')
+				return (0);
+			else
+				return (1);
+		}
+		i++;
+	}
+	return (1);
 }
 
 void	free_read(t_read **list)

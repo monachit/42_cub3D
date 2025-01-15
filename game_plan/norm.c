@@ -14,7 +14,7 @@
 
 int	close_window(void *v)
 {
-	t_vars *vars;
+	t_vars	*vars;
 
 	vars = v;
 	mlx_destroy_image(vars->mlx, vars->textures.north->img);
@@ -72,15 +72,15 @@ int	key_hook(int keycode, t_vars *vars)
 	key_hook2(keycode, vars, &new_x, &new_y);
 	if (keycode == 65307)
 		close_window(vars);
-	if (!wall_check(new_x + 25 , new_y - 25, vars))
-		return(0);
-	if (!wall_check(new_x - 25 , new_y + 25, vars))
-		return(0);
-	if (!wall_check(new_x + 25 , new_y + 25, vars))
+	if (!wall_check(new_x + 25, new_y - 25, vars))
 		return (0);
-	if (!wall_check(new_x - 25 , new_y - 25, vars))
+	if (!wall_check(new_x - 25, new_y + 25, vars))
 		return (0);
-	else 
+	if (!wall_check(new_x + 25, new_y + 25, vars))
+		return (0);
+	if (!wall_check(new_x - 25, new_y - 25, vars))
+		return (0);
+	else
 	{
 		vars->p_x = new_x;
 		vars->p_y = new_y;

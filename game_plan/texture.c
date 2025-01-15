@@ -54,7 +54,7 @@ t_textures	*texture_loader(t_vars *vars, char *path)
 	if (!txt->img)
 	{
 		free(txt);
-		write (2, "Path to image invalid!\n", 23);
+		write(2, "Path to image invalid!\n", 23);
 		return (NULL);
 	}
 	txt->addr = mlx_get_data_addr(txt->img, &txt->bit_per_pixel,
@@ -79,7 +79,7 @@ void	init_tssawer_amaalem(t_data *data, t_vars *vars)
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
 		free_data(data);
-		exit (1);
+		exit(1);
 	}
 	vars->textures.east = texture_loader(vars, data->east_path);
 	if (!vars->textures.east)
@@ -100,6 +100,6 @@ void	init_tssawer_amaalem(t_data *data, t_vars *vars)
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
 		free_data(data);
-		exit (1);
+		exit(1);
 	}
 }

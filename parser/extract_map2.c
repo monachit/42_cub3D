@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   extract_map2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 11:28:03 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/15 22:57:31 by younajja         ###   ########.fr       */
+/*   Created: 2025/01/15 22:44:09 by younajja          #+#    #+#             */
+/*   Updated: 2025/01/15 22:44:26 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../main.h"
 
-int	ft_atoi(const char *str)
+void	free_map(char **strs)
 {
-	int	n_p;
-	int	r;
 	int	i;
 
 	i = 0;
-	n_p = 1;
-	r = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (strs[i])
+		free(strs[i++]);
+	free(strs);
+}
+
+char	**extract_map(t_read *file, int len)
+{
+	char	**strs;
+
+	strs = norme_map(file, len);
+	if (!check_player(strs) || !parse_map(strs))
 	{
-		if (str[i] == '-')
-			n_p = n_p * -1;
-		i++;
+		free_map(strs);
+		return (NULL);
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		r = r * 10 + str[i] - 48;
-		i++;
-	}
-	return (n_p * r);
+	return (strs);
 }
