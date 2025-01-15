@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/13 22:05:45 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/15 03:38:47 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 
 void	drawing(t_vars *vars)
 {
-	// clear_image(vars, 0x000000);
+	//clear_image(vars, 0x000000);
 	// draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
     // for (int i = 0; i < vars->win_height; i++) 
     // {
@@ -109,16 +109,17 @@ void	game_plan(t_data *data)
 	vars.win_width = ft_strlen(data->map[0]);
 	vars.win_height = 0;
 	vars.direction = -1;
+	
 	handl_direction(data, &vars.direction);
 	while (data->map[vars.win_height])
 		vars.win_height++;
+	init_tssawer_amaalem(data, &vars);
 	vars.win = mlx_new_window(vars.mlx, S_W, S_H, "YWAAA");
 	if (!vars.win)
 		ft_show_error("mlx_new_window function fails");
 	vars.img = mlx_new_image(vars.mlx, S_W, S_H);
 	vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel,
 			&vars.line_length, &vars.endian);
-	init_tssawer_amaalem(data, &vars);
 	player_p(&vars, data);
 	mlx_hook(vars.win, 2, 1L << 0, key_hook, &vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);

@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include "mlx/mlx.h"
+// # include "mlx/mlx.h"
 # include <mlx.h>
 # include "get_next_line/get_next_line.h"
 # include <math.h>

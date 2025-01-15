@@ -57,7 +57,7 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 	b = bottom_p;
 			my_mlx_pixel_put(vars, ray, (int)tmp_y--, 0xF542C2);
 	
-	while (tmp_y > 0)
+	while (tmp_y >= 0)
 		my_mlx_pixel_put(vars, ray, (int)tmp_y--, rgb(vars->data->c1, vars->data->c2, vars->data->c3));
 	while (b < S_H)
 		my_mlx_pixel_put(vars, ray, (int)b++, 0x4290F5);

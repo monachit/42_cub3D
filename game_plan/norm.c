@@ -17,9 +17,21 @@ int	close_window(void *v)
 	t_vars *vars;
 
 	vars = v;
+	mlx_destroy_image(vars->mlx, vars->textures.north->img);
+	mlx_destroy_image(vars->mlx, vars->textures.south->img);
+	mlx_destroy_image(vars->mlx, vars->textures.east->img);
+	mlx_destroy_image(vars->mlx, vars->textures.west->img);
+	free(vars->textures.north);
+	free(vars->textures.south);
+	free(vars->textures.east);
+	free(vars->textures.west);
+
+	mlx_destroy_image(vars->mlx, vars->img);
+
 	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
-	free(vars->data);
+	free_data(vars->data);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -60,6 +72,10 @@ int	key_hook(int keycode, t_vars *vars)
 	new_x = vars->p_x;
 	new_y = vars->p_y;
 	key_hook2(keycode, vars, &new_x, &new_y);
+	if (keycode == 65307)
+	{
+		close_window(vars);
+	}
 	if (wall_check(new_x, new_y, vars))
 	{
 		vars->p_x = new_x;
@@ -70,20 +86,20 @@ int	key_hook(int keycode, t_vars *vars)
 	return (0);
 }
 
-// void	clear_image(t_vars *vars, int color)
-// {
-// 	int	y;
-// 	int	x;
+void	clear_image(t_vars *vars, int color)
+{
+	int	y;
+	int	x;
 
-// 	y = 0;
-// 	while (y < S_W)
-// 	{
-// 		x = 0;
-// 		while (x < S_H)
-// 		{
-// 			my_mlx_pixel_put(vars, x, y, color);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
+	y = 0;
+	while (y < S_W)
+	{
+		x = 0;
+		while (x < S_H)
+		{
+			my_mlx_pixel_put(vars, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
