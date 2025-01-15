@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/15 20:24:11 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:17:46 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,8 @@ void	my_mlx_pixel_put(t_vars *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	draw_square(t_vars *vars, int x, int y, int size, int color)
-{
-	for (int i = 0; i < size; i++) // Loop through the square's height
-	{
-		for (int j = 0; j < size; j++) // Loop through the square's width
-		{
-			my_mlx_pixel_put(vars, x + j, y + i, color); // Plot the pixel
-		}
-	}
-}
-
 void	drawing(t_vars *vars)
 {
-	// clear_image(vars, 0x000000);
-	// draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
-	// for (int i = 0; i < vars->win_height; i++)
-	// {
-	//     for (int j = 0; j < vars->win_width; j++)
-	//     {
-	//         if (vars->map1[i][j] == '1')
-	//             draw_square(vars, j * 100, i * 100, 100, 0xFF6FFF);
-	//     }
-	// }
 	cast_rays(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:41:44 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/15 05:43:52 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:20:21 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 
 	vars->distence *= cos(ray_a - vars->direction);
 	wall_h = (TILE_SIZE / vars->distence) * (S_H / 100 * TILE_SIZE / 2)
-		/ tan(FOV / 2);
+		/ tan(60 * (PI / 180) / 2);
 	vars->norm_1 = wall_h;
 	vars->norm2 = ray;
 	top_p = (S_H / 2) - (wall_h / 2);
@@ -84,9 +84,9 @@ void	cast_rays(t_vars *vars)
 	double	add_angl;
 	int		ray;
 
-	add_angl = (FOV / (S_W));
+	add_angl = (60 * (PI / 180) / (S_W));
 	ray = 0;
-	first_ray = vars->direction - (FOV / 2);
+	first_ray = vars->direction - (60 * (PI / 180) / 2);
 	while (ray < S_W)
 	{
 		x_inter = get_v_inter(vars, nor_angle(first_ray));

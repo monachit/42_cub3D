@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/15 22:49:03 by younajja         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:22:00 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,11 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-// # include "mlx/mlx.h"
 # include "get_next_line/get_next_line.h"
 # include <math.h>
 # include <mlx.h>
 
 # define PI 3.141592653589793
-# define length_ray 10
-# define FOV 60 * (PI / 180)
 # define S_W 1000
 # define S_H 1000
 # define TILE_SIZE 100
@@ -63,6 +60,8 @@ typedef struct t_data
 	int				f2;
 	int				f3;
 	char			**map;
+	int				h;
+	int				v;
 }					t_data;
 
 typedef struct t_textures
@@ -115,59 +114,37 @@ typedef struct s_vars
 	t_tata			textures;
 }					t_vars;
 
-typedef struct s_vector
-{
-	double			d_x;
-	double			d_y;
-
-}					vector;
-
-// parsing
 t_data				parse(int ac, char **av);
 void				game_plan(t_data *t_data);
-// utils
 int					check_name(char *name);
 t_read				*read_file(char *av);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_atoi_lhbal(char *str);
 void				ft_show_error(char *str);
 void				free_read(t_read **list);
-
-// read file
 void				insert_t_read(t_read **file, char *str);
 t_read				*read_file(char *av);
 int					calcul_token(t_read *file, t_type type);
-
-// tokenize data
 void				token_data(t_read **file);
 int					skip_spaces(char *str, int i);
 int					calcul_words(char *str);
 int					extract_len(char *str, int i);
 bool				check_characters(char *str);
 bool				check_empty_line(char *str);
-
-// parsing file
 bool				check_order(t_read *file);
-
-// extract colors
 void				extract_colors(t_read *file, t_data *data);
 int					check_virguls(char *s);
 int					len_nb(char *s, int *i);
 void				norme_c(t_data *data, int i, char *s, char *tmp);
 int					skip_beg(char *str);
 int					len_str_color(char *s, int i);
-
-// extract paths
 void				extract_paths(t_read *file, t_data *data);
-
-// extract map
 char				**extract_map(t_read *file, int len);
 int					ft_strlen_lhbal(char *str);
 bool				check_player(char **ss);
 bool				parse_map(char **map);
 char				**allocation_strs(int len);
 char				**norme_map(t_read *file, int len);
-
 t_textures			*chose_image(t_vars *vars, double ray_a);
 int					get_x(t_vars *vars, double ray);
 int					my_mlx_pixel_get(t_textures *txt, int x, int y);

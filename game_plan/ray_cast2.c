@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:44:43 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/13 00:03:34 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:13:23 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ double	get_h_inter(t_vars *vars, double angl)
 		h_x += x_step;
 		h_y += y_step;
 	}
+	vars->data->h = (int)h_x;
 	return (sqrt(pow(h_x - vars->p_x, 2) + pow(h_y - vars->p_y, 2)));
 }
 
@@ -64,6 +65,7 @@ double	get_v_inter(t_vars *vars, double angl)
 		v_x += x_step;
 		v_y += y_step;
 	}
+	vars->data->v = (int)v_y;
 	return (sqrt(pow(v_x - vars->p_x, 2) + pow(v_y - vars->p_y, 2)));
 }
 
