@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:42:41 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/15 03:38:47 by younajja         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:24:11 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	draw_square(t_vars *vars, int x, int y, int size, int color)
 
 void	drawing(t_vars *vars)
 {
-	//clear_image(vars, 0x000000);
+	// clear_image(vars, 0x000000);
 	// draw_square(vars, vars->p, vars->c, 20, 0xFF6FFF);
     // for (int i = 0; i < vars->win_height; i++) 
     // {

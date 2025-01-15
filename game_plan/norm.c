@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:34:51 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/13 22:04:49 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/15 20:21:31 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	close_window(void *v)
 	free(vars->textures.south);
 	free(vars->textures.east);
 	free(vars->textures.west);
-
 	mlx_destroy_image(vars->mlx, vars->img);
-
 	mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
@@ -73,10 +71,16 @@ int	key_hook(int keycode, t_vars *vars)
 	new_y = vars->p_y;
 	key_hook2(keycode, vars, &new_x, &new_y);
 	if (keycode == 65307)
-	{
 		close_window(vars);
-	}
-	if (wall_check(new_x, new_y, vars))
+	if (!wall_check(new_x + 25 , new_y - 25, vars))
+		return(0);
+	if (!wall_check(new_x - 25 , new_y + 25, vars))
+		return(0);
+	if (!wall_check(new_x + 25 , new_y + 25, vars))
+		return (0);
+	if (!wall_check(new_x - 25 , new_y - 25, vars))
+		return (0);
+	else 
 	{
 		vars->p_x = new_x;
 		vars->p_y = new_y;
