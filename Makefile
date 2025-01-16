@@ -10,7 +10,7 @@ SRCS = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c 
 		parser/extract_map.c game_plan/game.c game_plan/circle_check.c \
 		game_plan/norm.c game_plan/ray_cast.c game_plan/ray_cast2.c \
 		game_plan/texture.c parser/extract_colors2.c parser/tokenize_data2.c \
-		parser/extract_map2.c 
+		parser/extract_map2.c game_plan/textures2.c
 
 OBJS = $(SRCS:.c=.o)
 

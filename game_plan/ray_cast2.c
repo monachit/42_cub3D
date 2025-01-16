@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:44:43 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/16 00:13:23 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 01:01:19 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ double	get_h_inter(t_vars *vars, double angl)
 		h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
 	else
 		h_y = floor(vars->p_y / TILE_SIZE) * TILE_SIZE - 0.001;
-	printf("%f\n ", h_y);
 	h_x = vars->p_x + (h_y - vars->p_y) / tan(angl);
 	while (wall_check(h_x, h_y, vars))
 	{

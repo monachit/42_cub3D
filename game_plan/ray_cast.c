@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:41:44 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/16 00:20:21 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:31:47 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 	int		tmp_y;
 
 	vars->distence *= cos(ray_a - vars->direction);
-	wall_h = (TILE_SIZE / vars->distence) * (S_H / 100 * TILE_SIZE / 2)
-		/ tan(60 * (PI / 180) / 2);
+	wall_h = (TILE_SIZE / vars->distence) * ((S_W / 2)
+			/ tan(60 * (PI / 180) / 2));
 	vars->norm_1 = wall_h;
 	vars->norm2 = ray;
 	top_p = (S_H / 2) - (wall_h / 2);
@@ -58,7 +58,8 @@ void	rander_wall(t_vars *vars, int ray, double ray_a)
 		my_mlx_pixel_put(vars, ray, (int)tmp_y--, rgb(vars->data->c1,
 				vars->data->c2, vars->data->c3));
 	while (b < S_H)
-		my_mlx_pixel_put(vars, ray, (int)b++, 0x4290F5);
+		my_mlx_pixel_put(vars, ray, (int)b++, rgb(vars->data->f1,
+				vars->data->f2, vars->data->f3));
 	rander_wall2((int)top_p, (int)bottom_p, vars, ray_a);
 }
 

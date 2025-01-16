@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:37:50 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/16 00:17:01 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:58:38 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ int	my_mlx_pixel_get(t_textures *txt, int x, int y)
 
 int	get_x(t_vars *vars, double ray)
 {
-	(void)ray;
 	if (vars->flg_achmn_hayt == 0)
-		return (vars->data->h % TILE_SIZE);
+		return (fmod((vars->p_x + cos(ray) * vars->distence), TILE_SIZE));
 	else
-		return (vars->data->v % TILE_SIZE);
+		return (fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE));
 }
 
 t_textures	*chose_image(t_vars *vars, double ray_a)
@@ -67,40 +66,27 @@ void	init_tssawer_amaalem(t_data *data, t_vars *vars)
 {
 	vars->textures.north = texture_loader(vars, data->north_path);
 	if (!vars->textures.north)
-	{
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-		free_data(data);
-		exit(1);
-	}
+		ft_free_norme_one(vars);
 	vars->textures.south = texture_loader(vars, data->south_path);
 	if (!vars->textures.south)
 	{
+		mlx_destroy_image(vars->mlx, vars->textures.north->img);
 		free(vars->textures.north);
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-		free_data(data);
-		exit(1);
+		ft_free_norme_one(vars);
 	}
 	vars->textures.east = texture_loader(vars, data->east_path);
 	if (!vars->textures.east)
 	{
+		mlx_destroy_image(vars->mlx, vars->textures.north->img);
 		free(vars->textures.north);
+		mlx_destroy_image(vars->mlx, vars->textures.south->img);
 		free(vars->textures.south);
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-		free_data(data);
-		exit(1);
+		ft_free_norme_one(vars);
 	}
 	vars->textures.west = texture_loader(vars, data->west_path);
 	if (!vars->textures.west)
 	{
-		free(vars->textures.north);
-		free(vars->textures.south);
-		free(vars->textures.east);
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-		free_data(data);
-		exit(1);
+		ft_norm_free_txt(vars);
+		ft_free_norme_one(vars);
 	}
 }

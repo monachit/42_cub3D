@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:35:46 by monachit          #+#    #+#             */
-/*   Updated: 2025/01/16 00:22:00 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:59:14 by younajja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,5 +169,7 @@ void				my_mlx_pixel_put(t_vars *data, int x, int y, int color);
 void				clear_image(t_vars *vars, int color);
 void				drawing(t_vars *vars);
 void				free_data(t_data *data);
+void				ft_norm_free_txt(t_vars *vars);
+void				ft_free_norme_one(t_vars *vars);
 
 #endif
