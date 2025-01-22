@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:34:51 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/16 00:18:05 by mnachit          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:52:26 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ int	key_hook(int keycode, t_vars *vars)
 	key_hook2(keycode, vars, &new_x, &new_y);
 	if (keycode == 65307)
 		close_window(vars);
-	if (!wall_check(new_x + 25, new_y - 25, vars))
+	if (!wall_check(new_x + 3, new_y - 3, vars))
 		return (0);
-	if (!wall_check(new_x - 25, new_y + 25, vars))
+	if (!wall_check(new_x - 3, new_y + 3, vars))
 		return (0);
-	if (!wall_check(new_x + 25, new_y + 25, vars))
+	if (!wall_check(new_x + 3, new_y + 3, vars))
 		return (0);
-	if (!wall_check(new_x - 25, new_y - 25, vars))
+	if (!wall_check(new_x - 3, new_y - 3, vars))
 		return (0);
 	else
 	{
@@ -86,6 +86,7 @@ int	key_hook(int keycode, t_vars *vars)
 		vars->p_y = new_y;
 	}
 	vars->direction = nor_angle(vars->direction);
+	printf("Oky\n");
 	drawing(vars);
 	return (0);
 }

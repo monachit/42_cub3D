@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: younajja <younajja@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 23:37:50 by mnachit           #+#    #+#             */
-/*   Updated: 2025/01/16 00:58:38 by younajja         ###   ########.fr       */
+/*   Updated: 2025/01/16 01:08:59 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int	my_mlx_pixel_get(t_textures *txt, int x, int y)
 
 int	get_x(t_vars *vars, double ray)
 {
+	(void)ray;
 	if (vars->flg_achmn_hayt == 0)
-		return (fmod((vars->p_x + cos(ray) * vars->distence), TILE_SIZE));
+		return (vars->data->h % TILE_SIZE);
 	else
-		return (fmod((vars->p_y + sin(ray) * vars->distence), TILE_SIZE));
+		return (vars->data->v % TILE_SIZE);
 }
 
 t_textures	*chose_image(t_vars *vars, double ray_a)
